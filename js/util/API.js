@@ -1,3 +1,4 @@
+import qs from 'querystring';
 import axios from 'axios';
 
 class API {
@@ -5,10 +6,16 @@ class API {
         let response = await axios({
             url: 'http://necto68.url.ph/game/?g=app&json=1',
             method: 'post',
-            params: requestData,
+            data: qs.stringify(requestData),
         });
-        console.log(response);
+
         response = response.data;
+
+        if (response.charCodeAt(0) === 65279) {
+            response = response.substr(1);
+            response = JSON.parse(response);
+        }
+
         return response;
     }
 

@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import { observer } from 'mobx-react/native';
-import { Button, Container, Header, Content, Footer, Tab, Tabs, Text, Title } from 'native-base';
-import Icon from 'react-native-vector-icons/Entypo';
+import React, {Component} from "react";
+import {observer} from "mobx-react/native";
+import {Button, Container, Header, Tab, Tabs, Text, Title} from "native-base";
+import Icon from "react-native-vector-icons/Entypo";
 
-import API from '../util/API';
+import API from "../util/API";
 
-import Colors from '../constants/colors';
+import Colors from "../constants/colors";
 
-import TaskSection from '../sections/TaskSection';
-import SectorsSection from '../sections/SectorsSection';
-import CodeSection from '../sections/CodeSection';
+import TaskSection from "../sections/TaskSection";
+import SectorsSection from "../sections/SectorsSection";
+import CodeSection from "../sections/CodeSection";
 
 @observer
 class GameView extends Component {
