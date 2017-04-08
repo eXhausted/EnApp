@@ -1,32 +1,32 @@
-import React, { Component } from 'react';
-import { observer } from 'mobx-react/native';
-import { ScrollView, Text, View, RefreshControl } from 'react-native';
+import React from 'react';
+import { observer, inject } from 'mobx-react/native';
+import { ScrollView, Text, RefreshControl } from 'react-native';
 import HTMLView from '../core/components/HTMLView';
 import Colors from '../constants/colors';
 
-@observer
-class TaskSections extends Component {
-    render() {
-        const { levelName, taskText, shouldReplaceNlToBr, isRefreshing, updateGameModel } = this.props;
-        return (
-            <ScrollView
-              style={styles.scroll}
-              refreshControl={
-                  <RefreshControl
-                    refreshing={isRefreshing}
-                    onRefresh={() => updateGameModel()}
-                  />
-                  }
-            >
-                <Text style={styles.levelName}>{levelName}</Text>
-                <HTMLView
-                  html={taskText}
-                  shouldReplaceNlToBr={shouldReplaceNlToBr}
-                />
-            </ScrollView>
-        );
-    }
-}
+const mapStateToProps = stores => ({
+    gameStore: stores.gameStore,
+    Level: stores.gameStore.gameModel.Level,
+});
+
+const TaskSections = ({ Level, gameStore: { isRefreshing, updateGameModel } }) => (
+    <ScrollView
+      style={styles.scroll}
+      refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={updateGameModel}
+          />
+      }
+    >
+        <Text style={styles.levelName}>{Level.Name}</Text>
+        <HTMLView
+          html={Level.Tasks[0].TaskText}
+          shouldReplaceNlToBr={Level.Tasks[0].ReplaceNlToBr}
+        />
+    </ScrollView>
+);
+
 
 const styles = {
     levelName: {
@@ -44,4 +44,4 @@ const styles = {
     },
 };
 
-export default TaskSections;
+export default inject(mapStateToProps)(observer(TaskSections));

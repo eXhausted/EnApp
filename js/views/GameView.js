@@ -1,66 +1,68 @@
-import React, {Component} from "react";
-import {observer} from "mobx-react/native";
-import {Button, Container, Header, Tab, Tabs, Text, Title} from "native-base";
-import Icon from "react-native-vector-icons/Entypo";
+import React from 'react';
+import { View } from 'react-native';
+import { observer, inject } from 'mobx-react/native';
+import { Button, Container, Header, Tab, Tabs, Text, Title } from 'native-base';
+import Icon from 'react-native-vector-icons/Entypo';
 
-import API from "../util/API";
+import API from '../util/API';
+import Helper from '../util/helper';
 
-import Colors from "../constants/colors";
+import Colors from '../constants/colors';
 
-import TaskSection from "../sections/TaskSection";
-import SectorsSection from "../sections/SectorsSection";
-import CodeSection from "../sections/CodeSection";
+import CountableText from '../core/components/CountableText';
 
-@observer
-class GameView extends Component {
-    render() {
-        const { store } = this.props;
-        const { gameModel } = store;
-        const { Level } = gameModel;
+import TaskSection from '../sections/TaskSection';
+import SectorsSection from '../sections/SectorsSection';
+import CodeSection from '../sections/CodeSection';
 
-        return (
-            <Container>
-                <Header style={{ justifyContent: 'space-between', alignItems: 'center' }} hasTabs>
-                    <Text style={styles.upTime}>03:59:54</Text>
-                    <Title style={{ flex: 1 }}>{`${Level.Number} из ${gameModel.Levels.length}`}</Title>
-                    <Button
-                      onPress={() => API.loginUser()} style={{ flex: 1, justifyContent: 'flex-end' }}
-                      transparent
-                    >
-                        <Icon style={{ fontSize: 20, color: 'white' }} name="dots-three-vertical" />
-                    </Button>
-                </Header>
-                <Tabs locked>
-                    <Tab heading="ЗАДАНИЕ">
-                        <TaskSection
-                          levelName={Level.Name}
-                          taskText={Level.Tasks[0].TaskText}
-                          shouldReplaceNlToBr={Level.Tasks[0].ReplaceNlToBr}
-                          isRefreshing={store.isRefreshing}
-                          updateGameModel={store.updateGameModel}
-                        />
-                    </Tab>
-                    <Tab heading={`СЕКТОРА (${Level.SectorsLeftToClose})`}>
-                        <SectorsSection
-                          sectors={Level.Sectors}
-                          isRefreshing={store.isRefreshing}
-                          updateGameModel={store.updateGameModel}
-                        />
-                    </Tab>
-                    <Tab heading="ПОДСКАЗКИ">
-                        <Text>Подсказки</Text>
-                    </Tab>
-                </Tabs>
-                <CodeSection
-                  actualCode={store.actualCode}
-                  changeActualCode={store.changeActualCode}
-                  oldCodes={Level.MixedActions}
-                  sendCode={store.sendCode}
+
+const mapStateToProps = (stores => ({
+    globalTimerCounter: stores.gameStore.globalTimerCounter,
+    lastUpdateTimestamp: stores.gameStore.lastUpdateTimestamp,
+    Level: stores.gameStore.gameModel.Level,
+    Levels: stores.gameStore.gameModel.Levels,
+}));
+
+const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels }) => (
+    <Container>
+        <Header style={styles.headerStyle} hasTabs>
+            <View style={styles.timersContainer}>
+                <CountableText
+                  increment
+                  start={(lastUpdateTimestamp - Helper.normalizeTime(Level.StartTime.Value)) / 1000}
+                  textStyle={{ color: Colors.white }}
                 />
-            </Container>
-        );
-    }
-}
+                {
+                    Level.Timeout > 0 &&
+                        <CountableText
+                          start={Level.TimeoutSecondsRemain}
+                          textStyle={{ color: Colors.upTime }}
+                        />
+                }
+            </View>
+            <Title style={styles.levelNumber}>{`${Level.Number} из ${Levels.length}`}</Title>
+            <Button
+              onPress={API.loginUser}
+              style={styles.menuButton}
+              transparent
+            >
+                <Icon style={{ fontSize: 20, color: 'white' }} name="dots-three-vertical" />
+            </Button>
+        </Header>
+        <Tabs locked>
+            <Tab heading="ЗАДАНИЕ">
+                <TaskSection />
+            </Tab>
+            <Tab heading={`СЕКТОРА (${Level.SectorsLeftToClose})`}>
+                <SectorsSection />
+            </Tab>
+            <Tab heading="ПОДСКАЗКИ">
+                <Text>Подсказки</Text>
+            </Tab>
+        </Tabs>
+        <CodeSection />
+    </Container>
+);
 
 const styles = {
     mainContainer: {
@@ -69,10 +71,25 @@ const styles = {
         padding: 7,
     },
 
-    upTime: {
+    headerStyle: {
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+
+    timersContainer: {
         flex: 1,
-        color: Colors.white,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    levelNumber: {
+        flex: 1,
+    },
+
+    menuButton: {
+        flex: 1,
+        justifyContent: 'flex-end',
     },
 };
 
-export default GameView;
+export default inject(mapStateToProps)(observer(GameView));

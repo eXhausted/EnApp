@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react/native';
 import { Text, View } from 'react-native';
 
@@ -6,43 +6,38 @@ import Helper from '../util/helper';
 
 import Colors from '../constants/colors';
 
-@observer
-class Sector extends Component {
-    render() {
-        const { order, name, answerData, isAnswered } = this.props;
-
-        return (
-            <View style={styles.mainContainer}>
-                <View
-                  style={[
-                      styles.coloredLabel,
-                      { backgroundColor: isAnswered ? Colors.green : Colors.wrongCode },
-                  ]}
-                />
-                <View style={styles.sectorContainer}>
-                    <Text style={styles.sectorName}>{`#${order}   ${name}`}</Text>
-                    <Text
-                      style={[
-                          styles.sectorValue,
-                          { color: isAnswered ? Colors.rightCode : Colors.gray },
-                      ]}
-                    >
-                        { isAnswered ? answerData.Answer : 'Не введено'}
-                    </Text>
-                </View>
-                <View
-                  style={[
-                      styles.sectorContainer,
-                        { alignItems: 'flex-end', flexShrink: 1 },
-                  ]}
-                >
-                    { isAnswered && <Text style={styles.sectorInfo}>{ Helper.formatTime(answerData.AnswerDateTime.Value) }</Text> }
-                    { isAnswered && <Text style={[styles.sectorInfo, { marginTop: 2 }]}>{answerData.Login}</Text> }
-                </View>
+const Sector = ({ order, name, answerData, isAnswered }) => (
+    <View style={styles.mainContainer}>
+        <View
+          style={[
+              styles.coloredLabel,
+              { backgroundColor: isAnswered ? Colors.green : Colors.wrongCode },
+          ]}
+        />
+        <View style={styles.sectorContainer}>
+            <Text style={styles.sectorName}>{`#${order}   ${name}`}</Text>
+            <Text
+              style={[
+                  styles.sectorValue,
+                  { color: isAnswered ? Colors.rightCode : Colors.gray },
+              ]}
+            >
+                { isAnswered ? answerData.Answer : 'Не введено'}
+            </Text>
+        </View>
+        { isAnswered &&
+            <View
+              style={[
+                  styles.sectorContainer,
+                  { alignItems: 'flex-end', flexShrink: 1 },
+              ]}
+            >
+                <Text style={styles.sectorInfo}>{ Helper.formatTime(answerData.AnswerDateTime.Value) }</Text>
+                <Text style={[styles.sectorInfo, { marginTop: 2 }]}>{answerData.Login}</Text>
             </View>
-        );
-    }
-}
+        }
+    </View>
+);
 
 const styles = {
     mainContainer: {
@@ -84,4 +79,4 @@ const styles = {
     },
 };
 
-export default Sector;
+export default observer(Sector);

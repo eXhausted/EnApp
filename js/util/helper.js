@@ -18,6 +18,17 @@ class Helper {
         return moment(Helper.normalizeTime(time)).format('HH:mm:ss');
     }
 
+    static formatCount(s) {
+        const pad = num => (`0${num}`).slice(-2);
+        let seconds = s;
+
+        let minutes = Math.floor(seconds / 60);
+        seconds %= 60;
+        const hours = Math.floor(minutes / 60);
+        minutes %= 60;
+        return `${hours}:${pad(minutes)}:${pad(seconds)}`;
+    }
+
     static isEqualCode(code1, code2) {
         return code1.toString().toLowerCase() === code2.toString().toLowerCase();
     }

@@ -9,9 +9,9 @@
     hoist-non-react-statics "^1.2.0"
     lodash "^4.15.0"
 
-"@shoutem/theme@git+https://github.com/GeekyAnts/theme.git#caching":
+"@shoutem/theme@https://github.com/GeekyAnts/theme#caching":
   version "0.8.8"
-  resolved "git+https://github.com/GeekyAnts/theme.git#7c8d0ab19eb452c8c465bbd8e27f8cdc32fddba5"
+  resolved "https://github.com/GeekyAnts/theme#7c8d0ab19eb452c8c465bbd8e27f8cdc32fddba5"
   dependencies:
     hoist-non-react-statics "^1.0.5"
     lodash "^4.10.1"
@@ -3694,6 +3694,10 @@ react-devtools-core@^2.0.8:
   dependencies:
     cross-env "^3.1.4"
     ws "^2.0.3"
+
+react-native-background-timer@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-background-timer/-/react-native-background-timer-1.0.0.tgz#3735b12e23f1f10760a154d7ed054c1f86f1cc46"
 
 react-native-drawer@^2.3.0:
   version "2.3.0"

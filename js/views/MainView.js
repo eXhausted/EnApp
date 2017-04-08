@@ -1,20 +1,25 @@
-import React, {Component} from "react";
-import {Text, View} from "react-native";
-import {observer} from "mobx-react/native";
-import store from "../core/store";
-import GameView from "./GameView";
+import React, { Component } from 'react';
+import { Text, View } from 'react-native';
+import { observer, Provider } from 'mobx-react/native';
+import gameStore from '../core/stores/gameStore';
+import GameView from './GameView';
 
 @observer
 class MainView extends Component {
     componentDidMount() {
-        if (!store.gameModel.Level) {
-            store.updateGameModel();
+        if (!gameStore.gameModel.Level) {
+            gameStore.updateGameModel();
         }
     }
     render() {
-        return (
-            store.gameModel.Level ? <GameView store={store}/> : <View><Text>123123132132</Text></View>
-        );
+        if (gameStore.gameModel.Level) {
+            return (
+                <Provider gameStore={gameStore}>
+                    <GameView />
+                </Provider>
+            );
+        }
+        return <View><Text>Loading...</Text></View>;
     }
 }
 

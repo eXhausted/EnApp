@@ -1,47 +1,53 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { View, TextInput } from 'react-native';
-import { observer } from 'mobx-react/native';
-import { Icon, Spinner } from 'native-base';
+import { observer, inject } from 'mobx-react/native';
+import { Icon } from 'native-base';
 
 import Helper from '../util/helper';
 
 import Colors from '../constants/colors';
 
-@observer
-class CodeSection extends Component {
-    render() {
-        const { actualCode, changeActualCode, oldCodes, sendCode } = this.props;
-        const oldCode = oldCodes.find(codeObject => Helper.isEqualCode(codeObject.Answer, actualCode));
-        let highlightColor;
+const mapStateToProps = stores => ({
+    actualCode: stores.gameStore.actualCode,
+    changeActualCode: stores.gameStore.changeActualCode,
+    sendCode: stores.gameStore.sendCode,
+    oldCodes: stores.gameStore.gameModel.Level.MixedActions,
+});
 
-        if (oldCode) {
-            if (oldCode.IsCorrect) {
-                highlightColor = Colors.rightCode;
-            } else {
-                highlightColor = Colors.wrongCode;
-            }
+const CodeSection = ({ actualCode, changeActualCode, sendCode, oldCodes }) => {
+    const oldCode = oldCodes.find(codeObject => Helper.isEqualCode(codeObject.Answer, actualCode));
+    let highlightColor;
+    let iconName;
+
+    if (oldCode) {
+        if (oldCode.IsCorrect) {
+            highlightColor = Colors.rightCode;
+            iconName = 'checkmark-circle';
         } else {
-            highlightColor = Colors.white;
+            highlightColor = Colors.wrongCode;
+            iconName = 'close-circle';
         }
-
-        return (
-            <View style={styles.mainContainer}>
-                <View style={[styles.inputWrapper, { borderColor: highlightColor }]}>
-                    <TextInput
-                      underlineColorAndroid="transparent"
-                      autoCorrect={false}
-                      returnKeyType="send"
-                      onChangeText={code => changeActualCode(code)}
-                      onSubmitEditing={() => sendCode()}
-                      value={actualCode}
-                      style={[styles.codeInput, { color: highlightColor }]}
-                    />
-                    { oldCode && <Icon style={{ color: highlightColor }} name={oldCode.isCorrect ? 'checkmark-circle' : 'close-circle'} /> }
-                </View>
-            </View>
-        );
+    } else {
+        highlightColor = Colors.white;
     }
-}
+
+    return (
+        <View style={styles.mainContainer}>
+            <View style={[styles.inputWrapper, { borderColor: highlightColor }]}>
+                <TextInput
+                  underlineColorAndroid="transparent"
+                  autoCorrect={false}
+                  returnKeyType="send"
+                  onChangeText={code => changeActualCode(code)}
+                  onSubmitEditing={() => sendCode()}
+                  value={actualCode}
+                  style={[styles.codeInput, { color: highlightColor }]}
+                />
+                { oldCode && <Icon style={{ color: highlightColor }} name={iconName} /> }
+            </View>
+        </View>
+    );
+};
 
 const styles = {
     mainContainer: {
@@ -67,4 +73,4 @@ const styles = {
     },
 };
 
-export default CodeSection;
+export default inject(mapStateToProps)(observer(CodeSection));
