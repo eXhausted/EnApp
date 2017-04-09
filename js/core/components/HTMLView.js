@@ -43,6 +43,36 @@ class HTMLView extends Component {
                         ${html}
                     </div>
                     <script>
+                    
+                        function awaitPostMessage() {
+                            var isReactNativePostMessageReady = !!window.originalPostMessage;
+                            var queue = [];
+                            var currentPostMessageFn = function store(message) {
+                              if (queue.length > 100) queue.shift();
+                              queue.push(message);
+                            };
+                            if (!isReactNativePostMessageReady) {
+                              Object.defineProperty(window, 'postMessage', {
+                                configurable: true,
+                                enumerable: true,
+                                get() {
+                                  return currentPostMessageFn;
+                                },
+                                set(fn) {                               
+                                  currentPostMessageFn = fn;
+                                  isReactNativePostMessageReady = true;
+                                  setTimeout(sendQueue, 0);
+                                }
+                              });
+                            }
+                        
+                            function sendQueue() {
+                              while (queue.length > 0) window.postMessage(queue.shift());
+                            }
+                        }
+                        
+                        awaitPostMessage();
+
                         function sendMessage(type, data) {
                             window.postMessage(JSON.stringify({
                                 type: type,
@@ -53,16 +83,16 @@ class HTMLView extends Component {
                         function sendContentHeight() {
                             sendMessage('viewHeight', document.querySelector('#wrapper').scrollHeight);
                         }
-                        
+                                                
                         document.addEventListener('message', function(e) {
                             var data = JSON.parse(e.data);
 
                             if (data.type === 'setHTML') {
                                 document.getElementById('wrapper').innerHTML = data.data;
                                 sendContentHeight();
-                                setTimeout(function() {
+                                setInterval(function() {
                                     sendContentHeight()
-                                }, 100);
+                                }, 1000);
                             }
                         });
                     </script>

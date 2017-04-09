@@ -13,6 +13,7 @@ import CountableText from '../core/components/CountableText';
 
 import TaskSection from '../sections/TaskSection';
 import SectorsSection from '../sections/SectorsSection';
+import HintsSection from '../sections/HintsSection';
 import CodeSection from '../sections/CodeSection';
 
 
@@ -57,7 +58,7 @@ const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels }) =>
                 <SectorsSection />
             </Tab>
             <Tab heading="ПОДСКАЗКИ">
-                <Text>Подсказки</Text>
+                <HintsSection />
             </Tab>
         </Tabs>
         <CodeSection />
