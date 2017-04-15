@@ -19,7 +19,7 @@ const Hint = ({ number, hintText, remainSeconds }) => (
         />
         <View style={styles.sectorContainer}>
             <Text style={styles.sectorName}>{`Подсказка ${number}`}</Text>
-            { remainSeconds === 0 ? <HTMLView html={hintText} /> : null }
+            <HTMLView html={remainSeconds === 0 ? hintText : '--'} />
         </View>
     </View>
 );

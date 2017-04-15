@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font: 15px Verdana, Helvetica, sans-serif;
+            color: #fff;
+            background-color: #1D1D1D
+        }
+
+        a {
+            color:#86a486;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        img {
+            max-width: 100vw;
+        }
+    </style>
+</head>
+<body>
+<div id="wrapper"></div>
+<script>
+
+    function setHTML(html) {
+        document.getElementById('wrapper').innerHTML = html;
+    }
+
+    function sendMessage(type, data) {
+        document.title = JSON.stringify({ type: type, data: data });
+        window.location.hash = Date.now();
+    }
+
+    function sendContentHeight() {
+        sendMessage('viewHeight', document.querySelector('#wrapper').scrollHeight);
+    }
+
+    document.addEventListener('message', function(e) {
+        var data = JSON.parse(e.data);
+
+        if (data.type === 'setHTML') {
+            setHTML(data.data);
+            sendContentHeight();
+        }
+    });
+</script>
+</body>
+</html>

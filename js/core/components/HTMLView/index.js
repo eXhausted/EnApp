@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react/native';
 import { Linking, View, WebView } from 'react-native';
-import Helper from '../../util/helper';
+import Helper from '../../../util/helper';
 import Colors from 'EnApp/js/constants/colors';
 
 @observer
@@ -71,13 +71,17 @@ class HTMLView extends Component {
                             }
                         }
                         
-                        awaitPostMessage();
+                        //awaitPostMessage();
 
                         function sendMessage(type, data) {
-                            window.postMessage(JSON.stringify({
+                            document.title = JSON.stringify({ type: type, data: data });
+                            //document.title = '123';
+                            alert(document.title);
+                            window.location.hash = Date.now();
+                            /*window.postMessage(JSON.stringify({
                                 type: type,
                                 data: data
-                            }), "*");
+                            }), "*");*/
                         };
                         
                         function sendContentHeight() {
@@ -90,9 +94,6 @@ class HTMLView extends Component {
                             if (data.type === 'setHTML') {
                                 document.getElementById('wrapper').innerHTML = data.data;
                                 sendContentHeight();
-                                setInterval(function() {
-                                    sendContentHeight()
-                                }, 1000);
                             }
                         });
                     </script>
@@ -110,37 +111,46 @@ class HTMLView extends Component {
     }
 
     componentDidMount() {
+        console.log(this.props.html);
+
         this.injectHTML(this.props.html, this.props.shouldReplaceNlToBr);
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log(nextProps.html);
         this.injectHTML(nextProps.html, nextProps.shouldReplaceNlToBr);
     }
 
     injectHTML(html, shouldReplaceNlToBr) {
+        setTimeout(() => {
         this.webView.postMessage(JSON.stringify({
             type: 'setHTML',
             data: Helper.normalizeHTML(html, shouldReplaceNlToBr),
         }));
+        }, 0);
     }
 
     render() {
         return (
             <WebView
               ref={view => this.webView = view}
-              source={{
-                  html: this.getHTML(''),
-              }}
-              onMessage={event => this.onMessage(JSON.parse(event.nativeEvent.data))}
+              source={require('./defaultHTML.html')}
               automaticallyAdjustContentInsets={false}
               javaScriptEnable
               onNavigationStateChange={(event) => {
-                  Linking.canOpenURL(event.url).then((isCan) => {
-                      if (isCan) {
-                          this.webView.stopLoading();
-                          Linking.openURL(event.url);
-                      }
-                  });
+                  //console.log(event);
+                  // Linking.canOpenURL(event.url).then((isCan) => {
+                  //     if (isCan) {
+                  //         this.webView.stopLoading();
+                  //         Linking.openURL(event.url);
+                  //     }
+                  // });
+                  try {
+                      const messageData = JSON.parse(event.title);
+                      this.onMessage(messageData);
+                  } catch (e) {
+
+                  }
               }}
               style={{ height: this.state.webViewHeight }}
             />
