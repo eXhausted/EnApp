@@ -7,6 +7,8 @@ import Icon from 'react-native-vector-icons/Entypo';
 import API from '../util/API';
 import Helper from '../util/helper';
 
+import PushNotification from 'react-native-push-notification';
+
 import Colors from '../constants/colors';
 
 import CountableText from '../core/components/CountableText';
@@ -28,11 +30,11 @@ const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels }) =>
     <Container>
         <Header style={styles.headerStyle} hasTabs>
             <View style={styles.timersContainer}>
-                <CountableText
+                {/* <CountableText
                   increment
                   start={(lastUpdateTimestamp - Helper.normalizeTime(Level.StartTime.Value)) / 1000}
                   textStyle={{ color: Colors.white }}
-                />
+                /> */}
                 {
                     Level.Timeout > 0 &&
                         <CountableText
@@ -43,7 +45,22 @@ const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels }) =>
             </View>
             <Title style={styles.levelNumber}>{`${Level.Number} из ${Levels.length}`}</Title>
             <Button
-              onPress={API.loginUser}
+              onPress={() => {
+                  PushNotification.localNotification({
+                      id: '0',
+                      ticker: 'My Notification Ticker',
+                      bigText: 'My big text that will be shown when notification is expanded',
+                      subText: 'This is a subText',
+                      color: 'green',
+                      vibrate: true,
+                      vibration: 300,
+                      tag: 'some_tag',
+                      group: 'group',
+                      ongoing: false,
+                      title: 'My Notification Title',
+                      message: 'My Notification Message',
+                  });
+              }}
               style={styles.menuButton}
               transparent
             >

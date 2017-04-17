@@ -17,16 +17,25 @@ const Hint = ({ number, hintText, remainSeconds }) => (
                 { backgroundColor: remainSeconds === 0 ? Colors.green : Colors.wrongCode },
           ]}
         />
-        <View style={styles.sectorContainer}>
-            <Text style={styles.sectorName}>{`Подсказка ${number}`}</Text>
-            <HTMLView html={remainSeconds === 0 ? hintText : '--'} />
+        <View style={styles.hintContainer}>
+            <Text
+              style={[
+                  styles.hintName,
+                { color: remainSeconds === 0 ? Colors.yellow : Colors.gray },
+              ]}
+            >
+                {`Подсказка ${number}`}
+            </Text>
+            { remainSeconds === 0
+                ? <HTMLView html={hintText} />
+                : <CountableText start={remainSeconds} textStyle={{ color: Colors.gray }} />
+            }
         </View>
     </View>
 );
 
 const styles = {
     mainContainer: {
-        minHeight: 50,
         flexDirection: 'row',
         backgroundColor: Colors.background,
     },
@@ -36,8 +45,8 @@ const styles = {
         backgroundColor: Colors.green,
     },
 
-    sectorContainer: {
-        flex: 2,
+    hintContainer: {
+        flex: 1,
         paddingHorizontal: 10,
         paddingVertical: 5,
         borderColor: Colors.gray,
@@ -45,22 +54,9 @@ const styles = {
         borderTopWidth: 0.5,
     },
 
-    sectorName: {
-        color: Colors.white,
+    hintName: {
         fontFamily: 'Verdana',
         fontSize: 15,
-    },
-
-    sectorValue: {
-        color: Colors.gray,
-        fontFamily: 'Verdana',
-        fontSize: 15,
-    },
-
-    sectorInfo: {
-        color: Colors.gray,
-        fontFamily: 'Verdana',
-        fontSize: 13,
     },
 };
 

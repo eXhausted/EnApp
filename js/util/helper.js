@@ -3,7 +3,7 @@ import moment from 'moment';
 class Helper {
     static normalizeHTML(html, shouldReplaceNlToBr = true) {
         let normalizedHtml = html.replace(
-            /(\d{2,3}[.,]\d{3,8})[\s.,]{1,3}(\d{2,3}[.,]\d{3,8})/gim,
+            /(?![^<]*>)(-?\d{2,3}[.,]\d{3,8})[\s.,]{1,3}(-?\d{2,3}[.,]\d{3,8})/gim,
             '<a href="geo:$1,$2?q=$1,$2">$&</a>',
         );
         normalizedHtml = normalizedHtml.replace(/\r\n/gim, shouldReplaceNlToBr ? '<br/>' : ' ');
@@ -30,7 +30,9 @@ class Helper {
     }
 
     static isEqualCode(code1, code2) {
-        return code1.toString().toLowerCase() === code2.toString().toLowerCase();
+        const normalizeCode = code => code.toString().toLowerCase().trim();
+
+        return normalizeCode(code1) === normalizeCode(code2);
     }
 }
 

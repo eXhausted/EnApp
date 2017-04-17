@@ -7,4 +7,5 @@ export default {
     rightCode: '#00FF00',
     wrongCode: '#FF0000',
     upTime: '#FF7200',
+    yellow: '#FFFF00',
 };
