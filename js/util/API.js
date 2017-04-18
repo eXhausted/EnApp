@@ -6,6 +6,7 @@ class API {
         let response = await axios({
             url: 'http://necto68.url.ph/game/?g=app&json=1',
             method: 'post',
+            timeout: 10000,
             data: qs.stringify(requestData),
         });
 

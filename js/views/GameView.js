@@ -48,16 +48,11 @@ const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels }) =>
               onPress={() => {
                   PushNotification.localNotification({
                       id: '0',
-                      ticker: 'My Notification Ticker',
-                      bigText: 'My big text that will be shown when notification is expanded',
                       subText: 'This is a subText',
-                      color: 'green',
-                      vibrate: true,
-                      vibration: 300,
-                      tag: 'some_tag',
-                      group: 'group',
-                      ongoing: false,
-                      title: 'My Notification Title',
+                      vibration: 1500,
+                      ongoing: true,
+                      autoCancel: false,
+                      title: `My Notification Title${Date.now()}`,
                       message: 'My Notification Message',
                   });
               }}

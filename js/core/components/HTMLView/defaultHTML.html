@@ -40,11 +40,14 @@
         sendMessage('viewHeight', document.querySelector('#wrapper').scrollHeight);
     }
 
+    var injectedHTML = '';
+
     document.addEventListener('message', function(e) {
         var data = JSON.parse(e.data);
 
-        if (data.type === 'setHTML') {
-            setHTML(data.data);
+        if (data.type === 'setHTML' && data.data !== injectedHTML) {
+            injectedHTML = data.data;
+            setHTML(injectedHTML);
             sendContentHeight();
         }
     });

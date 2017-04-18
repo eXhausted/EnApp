@@ -4,6 +4,8 @@ import { observer, Provider } from 'mobx-react/native';
 import gameStore from '../core/stores/gameStore';
 import GameView from './GameView';
 
+import PushNotification from 'react-native-push-notification';
+
 @observer
 class MainView extends Component {
     componentDidMount() {

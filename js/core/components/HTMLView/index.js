@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react/native';
 import { Linking, View, WebView } from 'react-native';
+import { Spinner } from 'native-base';
 import Helper from '../../../util/helper';
 import Colors from '../../../constants/colors';
 
@@ -31,14 +32,17 @@ class HTMLView extends Component {
     }
 
     render() {
+        console.log('render');
         return (
             <WebView
               ref={(view) => { this.webView = view; }}
               source={require('./defaultHTML.html')}
               automaticallyAdjustContentInsets={false}
-              onLoadEnd={() => { this.injectHTML(this.props.html, this.props.shouldReplaceNlToBr); }}
+              renderLoading={() => <Spinner color="blue" />}
+              onLoadEnd={() => { console.log('load end'); this.injectHTML(this.props.html, this.props.shouldReplaceNlToBr); }}
               javaScriptEnable
               onNavigationStateChange={(event) => {
+                  console.log(event);
                   try {
                       const messageData = JSON.parse(event.title);
                       this.onMessage(messageData);
