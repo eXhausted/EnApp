@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react/native';
-import { Linking, View, WebView } from 'react-native';
+import { Linking, WebView } from 'react-native';
 import { Spinner } from 'native-base';
 import Helper from '../../../util/helper';
 import Colors from '../../../constants/colors';
@@ -32,27 +32,32 @@ class HTMLView extends Component {
     }
 
     render() {
-        console.log('render');
         return (
             <WebView
               ref={(view) => { this.webView = view; }}
-              source={require('./defaultHTML.html')}
+              source={{ uri: 'file:///android_asset/HTMLView/defaultHTML.html' }}
               automaticallyAdjustContentInsets={false}
               renderLoading={() => <Spinner color="blue" />}
-              onLoadEnd={() => { console.log('load end'); this.injectHTML(this.props.html, this.props.shouldReplaceNlToBr); }}
+              onLoadEnd={() => { this.injectHTML(this.props.html, this.props.shouldReplaceNlToBr); }}
               javaScriptEnable
+              startInLoadingState
               onNavigationStateChange={(event) => {
-                  console.log(event);
-                  try {
-                      const messageData = JSON.parse(event.title);
-                      this.onMessage(messageData);
-                  } catch (e) {
-                      // Linking.canOpenURL(event.url).then((isCan) => {
-                      //     if (isCan) {
-                      //         this.webView.stopLoading();
-                      //         Linking.openURL(event.url);
-                      //     }
-                      // });
+                  const protocol = event.url.split('://')[0];
+
+                  if (protocol !== 'file') {
+                      Linking.canOpenURL(event.url).then((isCan) => {
+                          if (isCan) {
+                              this.webView.stopLoading();
+                              Linking.openURL(event.url);
+                          }
+                      });
+                  } else {
+                      try {
+                          const messageData = JSON.parse(event.title);
+                          this.onMessage(messageData);
+                      } catch (e) {
+
+                      }
                   }
               }}
               style={{ height: this.state.webViewHeight, backgroundColor: Colors.background }}

@@ -1,12 +1,15 @@
 import qs from 'querystring';
 import axios from 'axios';
 
+
+const ALIAS_NECTO68_MIRROR = 'app';
+
 class API {
     static async getGameModal(requestData = {}) {
         let response = await axios({
-            url: 'http://necto68.url.ph/game/?g=app&json=1',
+            url: `http://necto68.url.ph/game/?g=${ALIAS_NECTO68_MIRROR}&json=1`,
             method: 'post',
-            timeout: 10000,
+            timeout: 12000,
             data: qs.stringify(requestData),
         });
 

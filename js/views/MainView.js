@@ -14,14 +14,11 @@ class MainView extends Component {
         }
     }
     render() {
-        if (gameStore.gameModel.Level) {
-            return (
-                <Provider gameStore={gameStore}>
-                    <GameView />
-                </Provider>
-            );
-        }
-        return <View><Text>Loading...</Text></View>;
+        return do {
+            if (gameStore.gameModel.Level) { <Provider gameStore={gameStore}><GameView /></Provider>; }
+            else if (gameStore.gameModel) { <View><Text>{`Event: ${gameStore.gameModel.Event}`}</Text></View>; }
+            else { <View><Text>Loading...</Text></View>; }
+        };
     }
 }
 
