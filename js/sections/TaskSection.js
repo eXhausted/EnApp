@@ -19,7 +19,7 @@ const TaskSections = ({ Level, gameStore: { isRefreshing, updateGameModel } }) =
           />
       }
     >
-        <Text style={styles.levelName}>{Level.Name}</Text>
+        { Level.Name ? <Text style={styles.levelName}>{Level.Name}</Text> : null }
         <HTMLView
           html={Level.Tasks[0].TaskText}
           shouldReplaceNlToBr={Level.Tasks[0].ReplaceNlToBr}

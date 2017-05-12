@@ -35,8 +35,10 @@ const CodeSection = ({ actualCode, changeActualCode, sendCode, oldCodes }) => {
         <View style={styles.mainContainer}>
             <View style={[styles.inputWrapper, { borderColor: highlightColor }]}>
                 <TextInput
-                  underlineColorAndroid="transparent"
+                  blurOnSubmit
+                  selectTextOnFocus
                   autoCorrect={false}
+                  underlineColorAndroid="transparent"
                   returnKeyType="send"
                   onChangeText={code => changeActualCode(code)}
                   onSubmitEditing={() => sendCode()}

@@ -40,6 +40,13 @@
         sendMessage('viewHeight', document.querySelector('#wrapper').scrollHeight);
     }
 
+    function addImgListeners() {
+        var imgs = document.querySelectorAll('#wrapper img');
+        [].forEach.call(imgs, function(img) {
+            img.onload = sendContentHeight;
+        })
+    }
+
     var injectedHTML = '';
 
     document.addEventListener('message', function(e) {
@@ -48,9 +55,14 @@
         if (data.type === 'setHTML' && data.data !== injectedHTML) {
             injectedHTML = data.data;
             setHTML(injectedHTML);
+            addImgListeners();
             sendContentHeight();
         }
     });
+
+    window.onload = function() {
+        sendContentHeight();
+    };
 </script>
 </body>
 </html>

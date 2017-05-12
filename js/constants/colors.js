@@ -8,4 +8,5 @@ export default {
     wrongCode: '#FF0000',
     upTime: '#FF7200',
     yellow: '#FFFF00',
+    blue: '#157EFC',
 };

@@ -37,14 +37,15 @@ const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels }) =>
                 /> */}
                 {
                     Level.Timeout > 0 &&
-                        <CountableText
-                          start={Level.TimeoutSecondsRemain}
-                          textStyle={{ color: Colors.upTime }}
-                        />
+                    <CountableText
+                      start={Level.TimeoutSecondsRemain}
+                      textStyle={{ color: Colors.upTime }}
+                    />
                 }
             </View>
             <Title style={styles.levelNumber}>{`${Level.Number} из ${Levels.length}`}</Title>
             <Button
+              transparent
               onPress={() => {
                   PushNotification.localNotification({
                       id: '0',
@@ -57,7 +58,6 @@ const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels }) =>
                   });
               }}
               style={styles.menuButton}
-              transparent
             >
                 <Icon style={{ fontSize: 20, color: 'white' }} name="dots-three-vertical" />
             </Button>
@@ -66,12 +66,18 @@ const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels }) =>
             <Tab heading="ЗАДАНИЕ">
                 <TaskSection />
             </Tab>
-            <Tab heading={`СЕКТОРА (${Level.SectorsLeftToClose})`}>
-                <SectorsSection />
-            </Tab>
-            <Tab heading="ПОДСКАЗКИ">
-                <HintsSection />
-            </Tab>
+            {
+                Level.SectorsLeftToClose > 0 &&
+                <Tab heading={`СЕКТОРА (${Level.SectorsLeftToClose})`}>
+                    <SectorsSection />
+                </Tab>
+            }
+            {
+                Level.Helps.length > 0 &&
+                <Tab heading="ПОДСКАЗКИ">
+                    <HintsSection />
+                </Tab>
+            }
         </Tabs>
         <CodeSection />
     </Container>

@@ -16,20 +16,20 @@ class HTMLView extends Component {
         this.injectHTML(nextProps.html, nextProps.shouldReplaceNlToBr);
     }
 
-    onMessage(data) {
+    onMessage = (data) => {
         if (data.type === 'viewHeight') {
             this.setState({
                 webViewHeight: data.data,
             });
         }
-    }
+    };
 
-    injectHTML(html, shouldReplaceNlToBr) {
+    injectHTML = (html, shouldReplaceNlToBr) => {
         this.webView.postMessage(JSON.stringify({
             type: 'setHTML',
             data: Helper.normalizeHTML(html, shouldReplaceNlToBr),
         }));
-    }
+    };
 
     render() {
         return (
@@ -43,6 +43,8 @@ class HTMLView extends Component {
               startInLoadingState
               onNavigationStateChange={(event) => {
                   const protocol = event.url.split('://')[0];
+                  console.log('change');
+                  console.log(event);
 
                   if (protocol !== 'file') {
                       Linking.canOpenURL(event.url).then((isCan) => {
