@@ -40,11 +40,11 @@
         sendMessage('viewHeight', document.querySelector('#wrapper').scrollHeight);
     }
 
-    function addImgListeners() {
-        var imgs = document.querySelectorAll('#wrapper img');
-        [].forEach.call(imgs, function(img) {
-            img.onload = sendContentHeight;
-        })
+    function addOnloadListeners() {
+        var elems = document.querySelectorAll('img, iframe');
+        [].forEach.call(elems, function(el) {
+            el.onload = sendContentHeight;
+        });
     }
 
     var injectedHTML = '';
@@ -55,7 +55,7 @@
         if (data.type === 'setHTML' && data.data !== injectedHTML) {
             injectedHTML = data.data;
             setHTML(injectedHTML);
-            addImgListeners();
+            addOnloadListeners();
             sendContentHeight();
         }
     });
