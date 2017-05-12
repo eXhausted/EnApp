@@ -30,7 +30,11 @@ class LoadingView extends Component {
             <Container >
                 <Content contentContainerStyle={styles.mainContainer}>
                     <Text style={styles.errorTitle}>
-                        { gameModel.Level ? LoadingErrorStrings[gameModel.Event] : LoadingErrorStrings.LOADING }
+                        {
+                            Object.prototype.hasOwnProperty.call(gameModel, 'Level')
+                                ? LoadingErrorStrings[gameModel.Event]
+                                : LoadingErrorStrings.LOADING
+                        }
                     </Text>
                     <View style={styles.spinnerContainer}>
                         { isRefreshing && <Spinner color={Colors.blue} /> }

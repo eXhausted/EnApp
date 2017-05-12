@@ -2,7 +2,7 @@ import qs from 'querystring';
 import axios from 'axios';
 
 
-const ALIAS_NECTO68_MIRROR = 'app';
+const ALIAS_NECTO68_MIRROR = 'ki3';
 
 class API {
     static async getGameModal(requestData = {}) {
