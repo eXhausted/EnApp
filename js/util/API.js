@@ -26,7 +26,7 @@ class API {
     static async loginUser() {
         const response = await axios.post('http://dp.en.cx/login/signin?json=1', {
             Login: 'necto68',
-            Password: '3av1415gor68_1',
+            Password: '*******',
         });
     }
 }
