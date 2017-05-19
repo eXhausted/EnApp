@@ -1,8 +1,10 @@
 import React from 'react';
 import { View } from 'react-native';
 import { observer, inject } from 'mobx-react/native';
-import { Button, Container, Header, Tab, Tabs, Text, Title } from 'native-base';
-import Icon from 'react-native-vector-icons/Entypo';
+import { Button, Container, Header, Tab, Tabs, Text, Title, ScrollableTab, TabHeading, Icon, Badge } from 'native-base';
+
+import IconEntypo from 'react-native-vector-icons/Entypo';
+import IconMC from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import API from '../util/API';
 import Helper from '../util/helper';
@@ -24,17 +26,18 @@ const mapStateToProps = (stores => ({
     lastUpdateTimestamp: stores.gameStore.lastUpdateTimestamp,
     Level: stores.gameStore.gameModel.Level,
     Levels: stores.gameStore.gameModel.Levels,
+    Hints: stores.gameStore.gameModel.Level.Helps,
 }));
 
-const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels }) => (
+const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels, Hints }) => (
     <Container>
         <Header style={styles.headerStyle} hasTabs>
             <View style={styles.timersContainer}>
-                {/* <CountableText
+                <CountableText
                   increment
                   start={(lastUpdateTimestamp - Helper.normalizeTime(Level.StartTime.Value)) / 1000}
                   textStyle={{ color: Colors.white }}
-                /> */}
+                />
                 {
                     Level.Timeout > 0 &&
                     <CountableText
@@ -59,22 +62,62 @@ const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels }) =>
               }}
               style={styles.menuButton}
             >
-                <Icon style={{ fontSize: 20, color: 'white' }} name="dots-three-vertical" />
+                <IconEntypo style={{ fontSize: 20, color: 'white' }} name="dots-three-vertical" />
             </Button>
         </Header>
-        <Tabs locked>
-            <Tab heading="ЗАДАНИЕ">
+        <Tabs
+          locked
+        >
+            <Tab
+              heading={
+                  <TabHeading>
+                      <IconMC style={styles.tabIcon} name="comment-text-outline" />
+                  </TabHeading>
+              }
+            >
                 <TaskSection />
             </Tab>
             {
                 Level.SectorsLeftToClose > 0 &&
-                <Tab heading={`СЕКТОРА (${Level.SectorsLeftToClose})`}>
+                <Tab
+                  heading={
+                      <TabHeading>
+                          <IconMC style={styles.tabIcon} name="format-list-numbers" />
+                          <Badge
+                            info
+                            style={styles.tabBadge}
+                          >
+                              <Text>
+                                  {Level.SectorsLeftToClose}
+                              </Text>
+                          </Badge>
+                      </TabHeading>
+                    }
+                >
                     <SectorsSection />
                 </Tab>
             }
             {
-                Level.Helps.length > 0 &&
-                <Tab heading="ПОДСКАЗКИ">
+                Hints.length > 0 &&
+                <Tab
+                  heading={
+                      <TabHeading>
+                          <IconMC style={styles.tabIcon} name="lightbulb" />
+                          {
+                              Hints.find(hint => hint.RemainSeconds > 0) &&
+                              <Badge
+                                info
+                                style={styles.tabBadge}
+                              >
+                                  <CountableText
+                                    start={Hints.find(hint => hint.RemainSeconds > 0).RemainSeconds}
+                                    textStyle={{ color: Colors.white }}
+                                  />
+                              </Badge>
+                          }
+                      </TabHeading>
+                    }
+                >
                     <HintsSection />
                 </Tab>
             }
@@ -108,6 +151,17 @@ const styles = {
     menuButton: {
         flex: 1,
         justifyContent: 'flex-end',
+    },
+
+    tabIcon: {
+        fontSize: 30,
+        color: Colors.white,
+    },
+
+    tabBadge: {
+        transform: [{
+            scale: 0.8,
+        }],
     },
 };
 

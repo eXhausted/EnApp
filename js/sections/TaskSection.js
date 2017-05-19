@@ -11,7 +11,8 @@ const mapStateToProps = stores => ({
 
 const TaskSections = ({ Level, gameStore: { isRefreshing, updateGameModel } }) => (
     <ScrollView
-      contentContainerStyle={styles.scroll}
+      style={styles.scroll}
+      contentContainerStyle={styles.scrollContent}
       refreshControl={
           <RefreshControl
             refreshing={isRefreshing}
@@ -39,6 +40,10 @@ const styles = {
     },
 
     scroll: {
+        backgroundColor: Colors.background,
+    },
+
+    scrollContent: {
         paddingHorizontal: 10,
         backgroundColor: Colors.background,
     },

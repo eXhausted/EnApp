@@ -6,12 +6,12 @@ import Hint from '../gameComponents/Hint';
 
 const mapStateToProps = stores => ({
     gameStore: stores.gameStore,
-    hints: stores.gameStore.gameModel.Level.Helps,
+    Hints: stores.gameStore.gameModel.Level.Helps,
 });
 
-const HintsSection = ({ hints, gameStore: { isRefreshing, updateGameModel } }) => (
+const HintsSection = ({ Hints, gameStore: { isRefreshing, updateGameModel } }) => (
     <FlatList
-      data={hints}
+      data={Hints}
       renderItem={({ item }) => (
           <Hint
             number={item.Number}
