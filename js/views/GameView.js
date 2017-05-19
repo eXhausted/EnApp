@@ -69,30 +69,14 @@ const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels, Hint
           locked
         >
             <Tab
-              heading={
-                  <TabHeading>
-                      <IconMC style={styles.tabIcon} name="comment-text-outline" />
-                  </TabHeading>
-              }
+              heading={'ЗАДАНИИЕ'}
             >
                 <TaskSection />
             </Tab>
             {
                 Level.SectorsLeftToClose > 0 &&
                 <Tab
-                  heading={
-                      <TabHeading>
-                          <IconMC style={styles.tabIcon} name="format-list-numbers" />
-                          <Badge
-                            info
-                            style={styles.tabBadge}
-                          >
-                              <Text>
-                                  {Level.SectorsLeftToClose}
-                              </Text>
-                          </Badge>
-                      </TabHeading>
-                    }
+                  heading={`СЕКТОРЫ (${Level.SectorsLeftToClose})`}
                 >
                     <SectorsSection />
                 </Tab>
@@ -100,23 +84,7 @@ const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels, Hint
             {
                 Hints.length > 0 &&
                 <Tab
-                  heading={
-                      <TabHeading>
-                          <IconMC style={styles.tabIcon} name="lightbulb" />
-                          {
-                              Hints.find(hint => hint.RemainSeconds > 0) &&
-                              <Badge
-                                info
-                                style={styles.tabBadge}
-                              >
-                                  <CountableText
-                                    start={Hints.find(hint => hint.RemainSeconds > 0).RemainSeconds}
-                                    textStyle={{ color: Colors.white }}
-                                  />
-                              </Badge>
-                          }
-                      </TabHeading>
-                    }
+                  heading={'ПОДСКАЗКИ'}
                 >
                     <HintsSection />
                 </Tab>
