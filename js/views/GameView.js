@@ -18,6 +18,7 @@ import CountableText from '../core/components/CountableText';
 import TaskSection from '../sections/TaskSection';
 import SectorsSection from '../sections/SectorsSection';
 import HintsSection from '../sections/HintsSection';
+import BonusesSection from '../sections/BonusesSection';
 import CodeSection from '../sections/CodeSection';
 
 
@@ -27,9 +28,10 @@ const mapStateToProps = (stores => ({
     Level: stores.gameStore.gameModel.Level,
     Levels: stores.gameStore.gameModel.Levels,
     Hints: stores.gameStore.gameModel.Level.Helps,
+    Bonuses: stores.gameStore.gameModel.Level.Bonuses,
 }));
 
-const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels, Hints }) => (
+const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels, Hints, Bonuses }) => (
     <Container>
         <Header style={styles.headerStyle} hasTabs>
             <View style={styles.timersContainer}>
@@ -67,16 +69,21 @@ const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels, Hint
         </Header>
         <Tabs
           locked
+          renderTabBar={() => <ScrollableTab backgroundColor={Colors.tabBackground} />}
         >
             <Tab
-              heading={'ЗАДАНИИЕ'}
+              heading={'ЗАДАНИЕ'}
+              textStyle={styles.tabText}
+              activeTextStyle={styles.tabText}
             >
                 <TaskSection />
             </Tab>
             {
                 Level.SectorsLeftToClose > 0 &&
                 <Tab
-                  heading={`СЕКТОРЫ (${Level.SectorsLeftToClose})`}
+                  heading={Helper.formatWithNewLine(['СЕКТОРЫ', `(${Level.SectorsLeftToClose})`])}
+                  textStyle={styles.tabText}
+                  activeTextStyle={styles.tabText}
                 >
                     <SectorsSection />
                 </Tab>
@@ -84,9 +91,35 @@ const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels, Hint
             {
                 Hints.length > 0 &&
                 <Tab
-                  heading={'ПОДСКАЗКИ'}
+                  heading={
+                      Helper.formatWithNewLine(
+                          [
+                              'ПОДСКАЗКИ',
+                              //Hints.find(hint => hint.RemainSeconds > 0) ? `(${Hints.find(hint => hint.RemainSeconds > 0).RemainSeconds})` : '',
+                          ],
+                      )
+                  }
+                  textStyle={styles.tabText}
+                  activeTextStyle={styles.tabText}
                 >
                     <HintsSection />
+                </Tab>
+            }
+            {
+                Bonuses.length > 0 &&
+                <Tab
+                  heading={
+                      Helper.formatWithNewLine(
+                          [
+                              'БОНУСЫ',
+                              `(${Bonuses.filter(bonus => bonus.IsAnswered).length}/${Bonuses.length})`,
+                          ],
+                      )
+                  }
+                  textStyle={styles.tabText}
+                  activeTextStyle={styles.tabText}
+                >
+                    <BonusesSection />
                 </Tab>
             }
         </Tabs>
@@ -130,6 +163,11 @@ const styles = {
         transform: [{
             scale: 0.8,
         }],
+    },
+
+    tabText: {
+        textAlign: 'center',
+        fontSize: 14,
     },
 };
 

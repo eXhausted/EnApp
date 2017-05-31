@@ -4,6 +4,8 @@ import { ScrollView, Text, RefreshControl, View } from 'react-native';
 import HTMLView from '../core/components/HTMLView';
 import Colors from '../constants/colors';
 
+import AuthorMessage from '../gameComponents/AuthorMessage';
+
 const mapStateToProps = stores => ({
     gameStore: stores.gameStore,
     Level: stores.gameStore.gameModel.Level,
@@ -20,12 +22,31 @@ const TaskSections = ({ Level, gameStore: { isRefreshing, updateGameModel } }) =
           />
       }
     >
-        { Level.Name ? <Text style={styles.levelName}>{Level.Name}</Text> : null }
-        <View style={styles.taskWrapper}>
-            <HTMLView
-              html={Level.Tasks[0].TaskText}
-              shouldReplaceNlToBr={Level.Tasks[0].ReplaceNlToBr}
-            />
+        {
+            Level.Messages.length > 0
+                ? Level.Messages.map(message =>
+                    <AuthorMessage
+                      key={message.MessageId}
+                      authorLogin={message.OwnerLogin}
+                      messageText={message.MessageText}
+                      replaceNl2Br={message.ReplaceNl2Br}
+                    />)
+                : null
+        }
+        <View
+          style={styles.mainContent}
+        >
+            {
+                Level.Name
+                    ? <Text style={styles.levelName}>{Level.Name}</Text>
+                    : null
+            }
+            <View style={styles.taskWrapper}>
+                <HTMLView
+                  html={Level.Tasks[0].TaskText}
+                  shouldReplaceNlToBr={Level.Tasks[0].ReplaceNlToBr}
+                />
+            </View>
         </View>
     </ScrollView>
 );
@@ -44,8 +65,11 @@ const styles = {
     },
 
     scrollContent: {
-        paddingHorizontal: 10,
         backgroundColor: Colors.background,
+    },
+
+    mainContent: {
+        paddingHorizontal: 10,
     },
 
     taskWrapper: {

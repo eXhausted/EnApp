@@ -4,30 +4,20 @@ import { Text, View } from 'react-native';
 
 import Colors from '../constants/colors';
 
-import CountableText from '../core/components/CountableText';
 import HTMLView from '../core/components/HTMLView';
 
-const Hint = ({ number, hintText, remainSeconds }) => (
+const AuthorMessage = ({ authorLogin, messageText, replaceNl2Br }) => (
     <View style={styles.mainContainer}>
         <View
-          style={[
-              styles.coloredLabel,
-                { backgroundColor: remainSeconds === 0 ? Colors.green : Colors.wrongCode },
-          ]}
+          style={styles.coloredLabel}
         />
         <View style={styles.messageContainer}>
             <Text
-              style={[
-                  styles.authorLogin,
-                { color: remainSeconds === 0 ? Colors.yellow : Colors.gray },
-              ]}
+              style={styles.authorLogin}
             >
-                {`Подсказка ${number}`}
+                {`${authorLogin}:`}
             </Text>
-            { remainSeconds === 0
-                ? <HTMLView html={hintText} />
-                : <CountableText start={remainSeconds} textStyle={{ color: Colors.gray }} />
-            }
+            <HTMLView html={messageText} shouldReplaceNlToBr={replaceNl2Br} />
         </View>
     </View>
 );
@@ -55,7 +45,8 @@ const styles = {
     authorLogin: {
         fontFamily: 'Verdana',
         fontSize: 15,
+        color: Colors.gray,
     },
 };
 
-export default observer(Hint);
+export default observer(AuthorMessage);

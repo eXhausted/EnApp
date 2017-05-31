@@ -6,20 +6,22 @@ import Helper from '../util/helper';
 
 import Colors from '../constants/colors';
 
-const Sector = ({ order, name, answerData, isAnswered }) => (
+import HTMLView from '../core/components/HTMLView';
+
+const Bonus = ({ number, name, task, isAnswered, answerData, hint }) => (
     <View style={styles.mainContainer}>
         <View
           style={[
               styles.coloredLabel,
-              { backgroundColor: isAnswered ? Colors.green : Colors.wrongCode },
+                { backgroundColor: isAnswered ? Colors.green : Colors.wrongCode },
           ]}
         />
         <View style={styles.bonusContainer}>
-            <Text style={styles.bonusName}>{`#${order}   ${name}`}</Text>
+            <Text style={styles.bonusName}>{`#${number}   ${name}`}</Text>
             <Text
               style={[
                   styles.bonusValue,
-                  { color: isAnswered ? Colors.rightCode : Colors.gray },
+                    { color: isAnswered ? Colors.rightCode : Colors.gray },
               ]}
             >
                 { isAnswered ? answerData.Answer : '—'}
@@ -29,12 +31,18 @@ const Sector = ({ order, name, answerData, isAnswered }) => (
             <View
               style={[
                   styles.bonusContainer,
-                  { alignItems: 'flex-end', flexShrink: 1 },
+                    { alignItems: 'flex-end', flexShrink: 1 },
               ]}
             >
                 <Text style={styles.bonusInfo}>{ Helper.formatTime(answerData.AnswerDateTime.Value) }</Text>
                 <Text style={[styles.bonusInfo, { marginTop: 2 }]}>{answerData.Login}</Text>
             </View>
+        }
+        {
+            (!isAnswered && task) && <HTMLView html={task} />
+        }
+        {
+            (isAnswered && hint) && <HTMLView html={hint} />
         }
     </View>
 );
@@ -79,4 +87,4 @@ const styles = {
     },
 };
 
-export default observer(Sector);
+export default observer(Bonus);

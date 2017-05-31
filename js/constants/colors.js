@@ -9,4 +9,5 @@ export default {
     upTime: '#FF7200',
     yellow: '#FFFF00',
     blue: '#157EFC',
+    tabBackground: '#3F51B5',
 };

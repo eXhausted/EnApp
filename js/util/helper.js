@@ -26,13 +26,18 @@ class Helper {
         seconds %= 60;
         const hours = Math.floor(minutes / 60);
         minutes %= 60;
-        return `${hours <= 9 ? hours : '9+'}:${pad(minutes)}:${pad(seconds)}`;
+        // return `${hours <= 9 ? hours : '9+'}:${pad(minutes)}:${pad(seconds)}`;
+        return `${hours}:${pad(minutes)}:${pad(seconds)}`;
     }
 
     static isEqualCode(code1, code2) {
         const normalizeCode = code => code.toString().toLowerCase().trim();
 
         return normalizeCode(code1) === normalizeCode(code2);
+    }
+
+    static formatWithNewLine(stringArray) {
+        return stringArray.join('\n');
     }
 }
 

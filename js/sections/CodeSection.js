@@ -45,7 +45,7 @@ const CodeSection = ({ actualCode, changeActualCode, sendCode, oldCodes }) => {
                   value={actualCode}
                   style={[styles.codeInput, { color: highlightColor }]}
                 />
-                { oldCode && <Icon style={{ color: highlightColor }} name={iconName} /> }
+                { oldCode && <Icon style={{ color: highlightColor, fontSize: 25 }} name={iconName} /> }
             </View>
         </View>
     );
@@ -65,6 +65,7 @@ const styles = {
         alignItems: 'center',
         padding: 2,
         borderWidth: 1,
+        borderRadius: 7,
     },
 
     codeInput: {

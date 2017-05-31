@@ -2,24 +2,27 @@ import React from 'react';
 import { observer, inject } from 'mobx-react/native';
 import { FlatList } from 'react-native';
 import Colors from '../constants/colors';
-import Hint from '../gameComponents/Hint';
+import Bonus from '../gameComponents/Bonus';
 
 const mapStateToProps = stores => ({
     gameStore: stores.gameStore,
-    hints: stores.gameStore.gameModel.Level.Helps,
+    bonuses: stores.gameStore.gameModel.Level.Bonuses,
 });
 
-const HintsSection = ({ hints, gameStore: { isRefreshing, updateGameModel } }) => (
+const BonusesSection = ({ bonuses, gameStore: { isRefreshing, updateGameModel } }) => (
     <FlatList
-      data={hints}
+      data={bonuses}
       renderItem={({ item }) => (
-          <Hint
+          <Bonus
             number={item.Number}
-            hintText={item.HelpText}
-            remainSeconds={item.RemainSeconds}
+            name={item.Name}
+            task={item.Task}
+            isAnswered={item.IsAnswered}
+            answerData={item.Answer}
+            hint={item.Help}
           />)
         }
-      keyExtractor={hint => hint.HelpId}
+      keyExtractor={hint => hint.BonusId}
       refreshing={isRefreshing}
       onRefresh={updateGameModel}
       style={styles.mainContainer}
@@ -33,4 +36,4 @@ const styles = {
     },
 };
 
-export default inject(mapStateToProps)(observer(HintsSection));
+export default inject(mapStateToProps)(observer(BonusesSection));
