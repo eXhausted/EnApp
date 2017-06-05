@@ -5,7 +5,8 @@ module.exports = {
         "react",
         "react-native",
         "jsx-a11y",
-        "import"
+        "import",
+        "babel"
     ],
     "rules": {
         "max-len": ["error", 150],

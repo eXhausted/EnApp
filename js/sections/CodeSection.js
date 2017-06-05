@@ -21,7 +21,7 @@ const CodeSection = ({ actualCode, changeActualCode, sendCode, oldCodes }) => {
 
     if (oldCode) {
         if (oldCode.IsCorrect) {
-            highlightColor = Colors.rightCode;
+            highlightColor = oldCode.Kind === 1 ? Colors.rightCode : Colors.bonus;
             iconName = 'checkmark-circle';
         } else {
             highlightColor = Colors.wrongCode;

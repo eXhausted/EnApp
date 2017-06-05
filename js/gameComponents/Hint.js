@@ -12,14 +12,14 @@ const Hint = ({ number, hintText, remainSeconds }) => (
         <View
           style={[
               styles.coloredLabel,
-                { backgroundColor: remainSeconds === 0 ? Colors.green : Colors.wrongCode },
+                { backgroundColor: remainSeconds === 0 ? Colors.green : Colors.gray },
           ]}
         />
         <View style={styles.messageContainer}>
             <Text
               style={[
                   styles.authorLogin,
-                { color: remainSeconds === 0 ? Colors.yellow : Colors.gray },
+                { color: remainSeconds === 0 ? Colors.yellow : Colors.white },
               ]}
             >
                 {`Подсказка ${number}`}

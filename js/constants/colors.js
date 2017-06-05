@@ -10,4 +10,5 @@ export default {
     yellow: '#FFFF00',
     blue: '#157EFC',
     tabBackground: '#3F51B5',
+    bonus: '#00D8FF',
 };

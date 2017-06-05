@@ -14,11 +14,11 @@ const Sector = ({ order, name, answerData, isAnswered }) => (
               { backgroundColor: isAnswered ? Colors.green : Colors.wrongCode },
           ]}
         />
-        <View style={styles.bonusContainer}>
-            <Text style={styles.bonusName}>{`#${order}   ${name}`}</Text>
+        <View style={styles.sectorContainer}>
+            <Text style={styles.sectorName}>{`#${order}   ${name}`}</Text>
             <Text
               style={[
-                  styles.bonusValue,
+                  styles.sectorValue,
                   { color: isAnswered ? Colors.rightCode : Colors.gray },
               ]}
             >
@@ -28,12 +28,12 @@ const Sector = ({ order, name, answerData, isAnswered }) => (
         { isAnswered &&
             <View
               style={[
-                  styles.bonusContainer,
-                  { alignItems: 'flex-end', flexShrink: 1 },
+                  styles.sectorContainer,
+                  { alignItems: 'flex-end', flex: 1 },
               ]}
             >
-                <Text style={styles.bonusInfo}>{ Helper.formatTime(answerData.AnswerDateTime.Value) }</Text>
-                <Text style={[styles.bonusInfo, { marginTop: 2 }]}>{answerData.Login}</Text>
+                <Text style={styles.sectorInfo}>{ Helper.formatTime(answerData.AnswerDateTime.Value) }</Text>
+                <Text style={[styles.sectorInfo, { marginTop: 2 }]}>{answerData.Login}</Text>
             </View>
         }
     </View>
@@ -51,7 +51,7 @@ const styles = {
         backgroundColor: Colors.green,
     },
 
-    bonusContainer: {
+    sectorContainer: {
         flex: 2,
         paddingHorizontal: 10,
         paddingVertical: 5,
@@ -60,19 +60,19 @@ const styles = {
         borderTopWidth: 0.5,
     },
 
-    bonusName: {
+    sectorName: {
         color: Colors.white,
         fontFamily: 'Verdana',
         fontSize: 15,
     },
 
-    bonusValue: {
+    sectorValue: {
         color: Colors.gray,
         fontFamily: 'Verdana',
         fontSize: 15,
     },
 
-    bonusInfo: {
+    sectorInfo: {
         color: Colors.gray,
         fontFamily: 'Verdana',
         fontSize: 13,

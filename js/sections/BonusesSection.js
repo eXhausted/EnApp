@@ -20,9 +20,13 @@ const BonusesSection = ({ bonuses, gameStore: { isRefreshing, updateGameModel } 
             isAnswered={item.IsAnswered}
             answerData={item.Answer}
             hint={item.Help}
+            awardTime={item.AwardTime}
+            expired={item.Expired}
+            secondsToStart={item.SecondsToStart}
+            secondsLeft={item.SecondsLeft}
           />)
         }
-      keyExtractor={hint => hint.BonusId}
+      keyExtractor={bonus => bonus.BonusId}
       refreshing={isRefreshing}
       onRefresh={updateGameModel}
       style={styles.mainContainer}

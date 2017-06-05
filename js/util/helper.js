@@ -18,7 +18,8 @@ class Helper {
         return moment(Helper.normalizeTime(time)).format('HH:mm:ss');
     }
 
-    static formatCount(s) {
+    static formatCount(s, options = {}) {
+        const { collapse, withUnits } = options;
         const pad = num => (`0${num}`).slice(-2);
         let seconds = s;
 
@@ -26,8 +27,35 @@ class Helper {
         seconds %= 60;
         const hours = Math.floor(minutes / 60);
         minutes %= 60;
-        // return `${hours <= 9 ? hours : '9+'}:${pad(minutes)}:${pad(seconds)}`;
-        return `${hours}:${pad(minutes)}:${pad(seconds)}`;
+
+        if (collapse) {
+            return [
+                hours > 0 ? hours : '',
+                do {
+                    // eslint-disable-next-line
+                    if (hours > 0) { withUnits ? ' ч ' : ':' } else { '' }
+                },
+                minutes > 0 ? minutes : '',
+                do {
+                    // eslint-disable-next-line
+                    if (minutes > 0) { withUnits ? ' м ' : ':' } else { '' }
+                },
+                seconds > 0 ? seconds : '',
+                do {
+                    // eslint-disable-next-line
+                    if (seconds > 0) { withUnits ? ' с ' : ':' } else { '' }
+                },
+            ].join('').trim();
+        }
+
+        return [
+            hours,
+            withUnits ? ' ч ' : ':',
+            pad(minutes),
+            withUnits ? ' м ' : ':',
+            pad(seconds),
+            withUnits ? ' с ' : '',
+        ].join('').trim();
     }
 
     static isEqualCode(code1, code2) {
