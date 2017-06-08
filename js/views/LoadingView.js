@@ -5,11 +5,11 @@ import { Container, Content, Spinner, Button } from 'native-base';
 import LoadingErrorStrings from '../constants/loadingErrorStrings';
 import Colors from '../constants/colors';
 
-const mapStateToProps = (stores => ({
+const mapStateToProps = stores => ({
     gameModel: stores.gameStore.gameModel,
     updateGameModel: stores.gameStore.updateGameModel,
     isRefreshing: stores.gameStore.isRefreshing,
-}));
+});
 
 class LoadingView extends Component {
 
