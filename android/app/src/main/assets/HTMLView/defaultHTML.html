@@ -9,7 +9,7 @@
             padding: 0;
             font: 15px Verdana, Helvetica, sans-serif;
             color: #fff;
-            background-color: #1D1D1D
+            background-color: #1D1D1D;
         }
 
         a {
@@ -28,6 +28,8 @@
 <script>
 
     function setHTML(html) {
+        // hack for fucking strange decodeUri before set innerHTML. see in util/helper.js
+        html = html.replace(/HACK_WITH_PERCENTAGE_FOR_NOT_DECODE_URI_BEFORE_WEBVIEW/gim, '%');
         document.getElementById('wrapper').innerHTML = html;
     }
 
@@ -40,9 +42,9 @@
         sendMessage('viewHeight', document.querySelector('#wrapper').scrollHeight);
     }
 
-    function addOnloadListeners() {
-        var elems = document.querySelectorAll('img, iframe');
-        [].forEach.call(elems, function(el) {
+    function addOnLoadListeners() {
+        var elements = document.querySelectorAll('img, iframe');
+        [].forEach.call(elements, function(el) {
             el.onload = sendContentHeight;
         });
     }
@@ -55,7 +57,7 @@
         if (data.type === 'setHTML' && data.data !== injectedHTML) {
             injectedHTML = data.data;
             setHTML(injectedHTML);
-            addOnloadListeners();
+            addOnLoadListeners();
             sendContentHeight();
         }
     });

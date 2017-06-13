@@ -7,6 +7,8 @@ class Helper {
             '<a href="geo:$1,$2?q=$1,$2">$&</a>',
         );
         normalizedHtml = normalizedHtml.replace(/\r\n/gim, shouldReplaceNlToBr ? '<br/>' : ' ');
+        // hack for fucking strange decodeUri before set innerHTML. see in defaultHTML.html
+        normalizedHtml = normalizedHtml.replace(/%/gim, 'HACK_WITH_PERCENTAGE_FOR_NOT_DECODE_URI_BEFORE_WEBVIEW');
         return normalizedHtml;
     }
 

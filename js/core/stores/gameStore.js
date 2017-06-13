@@ -1,6 +1,6 @@
 import { action, observable } from 'mobx';
 import BackgroundTimer from 'react-native-background-timer';
-import PushNotification from 'react-native-push-notification';
+import onGlobalTimerTick from '../../core/events/onGlobalTimerTick';
 
 import API from '../../util/API';
 
@@ -13,7 +13,6 @@ class GameStore {
     @observable lastUpdateTimestamp = Date.now();
 
     globalTimer = null;
-    REFRESH_INTERVAL_SECONDS = 30;
 
     @action updateGameModel = async (requestData) => {
         if (this.isRefreshing) return;
@@ -34,11 +33,7 @@ class GameStore {
         if (this.globalTimer) BackgroundTimer.clearInterval(this.globalTimer);
 
         this.globalTimer = BackgroundTimer.setInterval(() => {
-            this.globalTimerCounter += 1;
-
-            if (this.REFRESH_INTERVAL_SECONDS > 0 && this.globalTimerCounter % this.REFRESH_INTERVAL_SECONDS === 0) {
-                this.updateGameModel();
-            }
+            onGlobalTimerTick();
         }, 1000);
     };
 
