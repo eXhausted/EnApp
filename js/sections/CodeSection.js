@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TextInput, Alert } from 'react-native';
+import { View, TextInput, Alert, Text } from 'react-native';
 import { observer, inject } from 'mobx-react/native';
 import { Icon } from 'native-base';
 
@@ -13,6 +13,9 @@ const mapStateToProps = stores => ({
     sendCode: stores.gameStore.sendCode,
     oldCodes: stores.gameStore.gameModel.Level.MixedActions,
     hasAnswerBlockRule: stores.gameStore.gameModel.Level.HasAnswerBlockRule,
+    blockTargetId: stores.gameStore.gameModel.Level.BlockTargetId,
+    attemtsNumber: stores.gameStore.gameModel.Level.AttemtsNumber,
+    attemtsPeriod: stores.gameStore.gameModel.Level.AttemtsPeriod,
 });
 
 class CodeSection extends Component {
@@ -31,7 +34,7 @@ class CodeSection extends Component {
     };
 
     render() {
-        const { actualCode, changeActualCode, sendCode, oldCodes, hasAnswerBlockRule } = this.props;
+        const { actualCode, changeActualCode, sendCode, oldCodes, hasAnswerBlockRule, blockTargetId, attemtsNumber, attemtsPeriod } = this.props;
 
         const oldCode = oldCodes.find(codeObject => Helper.isEqualCode(codeObject.Answer, actualCode));
         let highlightColor;
@@ -45,13 +48,32 @@ class CodeSection extends Component {
                 highlightColor = Colors.wrongCode;
                 iconName = 'close-circle';
             }
+        } else if (hasAnswerBlockRule) {
+            highlightColor = Colors.upTime;
         } else {
             highlightColor = Colors.white;
         }
 
         return (
             <View style={styles.mainContainer}>
+                {
+                    hasAnswerBlockRule &&
+                    <View
+                      style={styles.blockRuleContainer}
+                    >
+                        <Text
+                          style={styles.blockRuleText}
+                        >
+                            {`Не более ${attemtsNumber} попыток за ${Helper.formatCount(attemtsPeriod, { withUnits: true, collapse: true })} для`}
+                        </Text>
+                        <Icon
+                          name={blockTargetId === 2 ? 'people' : 'person'}
+                          style={{ color: Colors.upTime, fontSize: 19, marginHorizontal: 5 }}
+                        />
+                    </View>
+                }
                 <View style={[styles.inputWrapper, { borderColor: highlightColor }]}>
+                    { hasAnswerBlockRule && <Icon style={{ color: Colors.upTime, fontSize: 25, marginHorizontal: 5 }} name="warning" /> }
                     <TextInput
                       blurOnSubmit
                       selectTextOnFocus
@@ -63,7 +85,7 @@ class CodeSection extends Component {
                       value={actualCode}
                       style={[styles.codeInput, { color: highlightColor }]}
                     />
-                    { oldCode && <Icon style={{ color: highlightColor, fontSize: 25 }} name={iconName} /> }
+                    { oldCode && <Icon style={{ color: highlightColor, fontSize: 25, marginHorizontal: 5 }} name={iconName} /> }
                 </View>
             </View>
         );
@@ -93,6 +115,16 @@ const styles = {
         fontSize: 20,
         padding: 0,
     },
+
+    blockRuleContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+    },
+
+    blockRuleText: {
+        fontFamily: 'Verdana',
+        color: Colors.upTime,
+    }
 };
 
 export default inject(mapStateToProps)(observer(CodeSection));
