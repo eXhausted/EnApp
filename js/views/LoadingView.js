@@ -4,10 +4,12 @@ import { observer, inject } from 'mobx-react/native';
 import { Container, Content, Spinner, Button } from 'native-base';
 import LoadingErrorStrings from '../constants/loadingErrorStrings';
 import Colors from '../constants/colors';
+import asyncStorage from "../util/asyncStorage";
 
 const mapStateToProps = stores => ({
     gameModel: stores.gameStore.gameModel,
     updateGameModel: stores.gameStore.updateGameModel,
+    setActualView: stores.gameStore.setActualView,
     isRefreshing: stores.gameStore.isRefreshing,
 });
 
@@ -23,8 +25,13 @@ class LoadingView extends Component {
         updateGameModel();
     };
 
+    logOut = async () => {
+        await asyncStorage.setItem('cookiesValue', '');
+        this.props.setActualView('LoginView');
+    };
+
     render() {
-        const { gameModel, isRefreshing } = this.props;
+        const { gameModel, isRefreshing, setActualView } = this.props;
 
         return (
             <Container >
@@ -46,6 +53,13 @@ class LoadingView extends Component {
                       onPress={this.updateGameModel}
                     >
                         <Text>{'Обновить'}</Text>
+                    </Button>
+                    <Button
+                        danger
+                        block
+                        onPress={this.logOut}
+                    >
+                        <Text>{'Выход'}</Text>
                     </Button>
                 </Content>
             </Container>

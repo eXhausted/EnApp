@@ -3,6 +3,7 @@ import BackgroundTimer from 'react-native-background-timer';
 import onGlobalTimerTick from '../../core/events/onGlobalTimerTick';
 
 import API from '../../util/API';
+import asyncStorage from '../../util/asyncStorage';
 
 
 class GameStore {
@@ -11,6 +12,7 @@ class GameStore {
     @observable isRefreshing = false;
     @observable actualCode = '';
     @observable lastUpdateTimestamp = Date.now();
+    @observable actualView = 'LoadingView';
 
     globalTimer = null;
 
@@ -27,14 +29,22 @@ class GameStore {
             return;
         }
 
-        this.lastUpdateTimestamp = Date.now();
-        this.globalTimerCounter = 0;
+        if (this.gameModel.Event === 0) {
+            this.setActualView('GameView');
 
-        if (this.globalTimer) BackgroundTimer.clearInterval(this.globalTimer);
+            this.lastUpdateTimestamp = Date.now();
+            this.globalTimerCounter = 0;
 
-        this.globalTimer = BackgroundTimer.setInterval(() => {
-            onGlobalTimerTick();
-        }, 1000);
+            if (this.globalTimer) BackgroundTimer.clearInterval(this.globalTimer);
+
+            this.globalTimer = BackgroundTimer.setInterval(() => {
+                onGlobalTimerTick();
+            }, 1000);
+        } else if (Number.isInteger(this.gameModel.Event)) {
+            this.setActualView('LoadingView');
+        } else {
+            this.setActualView('LoginView');
+        }
     };
 
     @action sendCode = async () => {
@@ -50,6 +60,14 @@ class GameStore {
     @action changeActualCode = (code) => {
         this.actualCode = code;
     };
+
+    @action setActualView = (viewName) => {
+        if (viewName !== 'GameView' && this.globalTimer) {
+            BackgroundTimer.clearInterval(this.globalTimer);
+        }
+
+        this.actualView = viewName;
+    }
 }
 
 export default new GameStore();
