@@ -3,9 +3,6 @@ import axios from 'axios';
 
 import asyncStorage from './asyncStorage';
 
-
-const ALIAS_NECTO68_MIRROR = 'app';
-
 class API {
     static async getGameModal(requestData = {}) {
         const storageValues = await asyncStorage.getItems([
@@ -14,20 +11,28 @@ class API {
             'cookiesValue',
         ]);
 
+        const {
+            domainValue,
+            idGameValue,
+            cookiesValue,
+        } = storageValues;
+
+        if (!domainValue || !idGameValue || !cookiesValue) {
+            return {};
+        }
+
         let response = await axios({
-            // url: `http://necto68.url.ph/game/?g=${ALIAS_NECTO68_MIRROR}&json=1`,
-            url: `http://${storageValues.domainValue}/gameengines/encounter/play/${storageValues.idGameValue}?json=1`,
+            url: `http://${domainValue}/gameengines/encounter/play/${idGameValue}?json=1`,
             method: 'post',
             timeout: 12000,
             data: qs.stringify(requestData),
             withCredentials: true,
             maxRedirects: 0,
             headers: {
-                Cookie: storageValues.cookiesValue,
+                // Cookie: cookiesValue,
+                'Accept-Language': 'ru',
             },
         });
-
-        console.log(response);
 
         response = response.data;
 

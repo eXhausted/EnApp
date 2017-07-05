@@ -6,10 +6,7 @@ import { Button, Container, Header, Tab, Tabs, Text, Title, ScrollableTab, TabHe
 import IconEntypo from 'react-native-vector-icons/Entypo';
 import IconMC from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import API from '../util/API';
 import Helper from '../util/helper';
-
-import PushNotification from 'react-native-push-notification';
 
 import Colors from '../constants/colors';
 
@@ -20,6 +17,9 @@ import SectorsSection from '../sections/SectorsSection';
 import HintsSection from '../sections/HintsSection';
 import BonusesSection from '../sections/BonusesSection';
 import CodeSection from '../sections/CodeSection';
+
+import asyncStorage from '../util/asyncStorage';
+import gameStore from '../core/stores/gameStore';
 
 
 const mapStateToProps = (stores => ({
@@ -52,15 +52,9 @@ const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels, Hint
             <Button
               transparent
               onPress={() => {
-                  PushNotification.localNotification({
-                      id: '0',
-                      subText: 'This is a subText',
-                      vibration: 1500,
-                      ongoing: true,
-                      autoCancel: false,
-                      title: `My Notification Title${Date.now()}`,
-                      message: 'My Notification Message',
-                  });
+                  asyncStorage.setItem('cookiesValue', '');
+                  gameStore.setActualView('LoginView');
+                  gameStore.gameModel = {};
               }}
               style={styles.menuButton}
             >
@@ -72,7 +66,12 @@ const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels, Hint
           renderTabBar={() => <ScrollableTab backgroundColor={Colors.tabBackground} />}
         >
             <Tab
-              heading={'ЗАДАНИЕ'}
+              heading={
+                  Helper.formatWithNewLine([
+                      'ЗАДАНИЕ',
+                      Level.Messages.length > 0 ? `(${Level.Messages.length})` : '',
+                  ])
+              }
               textStyle={styles.tabText}
               activeTextStyle={styles.tabText}
             >
@@ -92,12 +91,10 @@ const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels, Hint
                 Hints.length > 0 &&
                 <Tab
                   heading={
-                      Helper.formatWithNewLine(
-                          [
-                              'ПОДСКАЗКИ',
-                              //Hints.find(hint => hint.RemainSeconds > 0) ? `(${Hints.find(hint => hint.RemainSeconds > 0).RemainSeconds})` : '',
-                          ],
-                      )
+                      Helper.formatWithNewLine([
+                          'ПОДСКАЗКИ',
+                          // Hints.find(hint => hint.RemainSeconds > 0) ? `(${Hints.find(hint => hint.RemainSeconds > 0).RemainSeconds})` : '',
+                      ])
                   }
                   textStyle={styles.tabText}
                   activeTextStyle={styles.tabText}
@@ -109,12 +106,10 @@ const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels, Hint
                 Bonuses.length > 0 &&
                 <Tab
                   heading={
-                      Helper.formatWithNewLine(
-                          [
-                              'БОНУСЫ',
-                              `(${Bonuses.filter(bonus => bonus.IsAnswered).length}/${Bonuses.length})`,
-                          ],
-                      )
+                      Helper.formatWithNewLine([
+                          'БОНУСЫ',
+                          `(${Bonuses.filter(bonus => bonus.IsAnswered).length}/${Bonuses.length})`,
+                      ])
                   }
                   textStyle={styles.tabText}
                   activeTextStyle={styles.tabText}

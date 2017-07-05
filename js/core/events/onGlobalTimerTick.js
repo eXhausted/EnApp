@@ -16,8 +16,8 @@ export default () => {
             message: [
                 `${Level.Timeout > 0 ? `АП: ${Helper.formatCount(Level.TimeoutSecondsRemain - gameStore.globalTimerCounter)}` : ''}`,
                 `Осталось: ${Level.SectorsLeftToClose > 0 ? Level.SectorsLeftToClose : 1}`,
-            ].join('   '),
-            ongoing: true,
+            ].join('   ').trim(),
+            ongoing: false,
             autoCancel: false,
             vibrate: false,
             playSound: false,

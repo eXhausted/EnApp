@@ -67,7 +67,7 @@ class Helper {
     }
 
     static formatWithNewLine(stringArray) {
-        return stringArray.join('\n');
+        return stringArray.join('\n').trim();
     }
 }
 
