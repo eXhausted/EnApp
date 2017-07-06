@@ -30,16 +30,7 @@ class GameStore {
         }
 
         if (this.gameModel.Event === 0) {
-            this.setActualView('GameView');
-
-            this.lastUpdateTimestamp = Date.now();
-            this.globalTimerCounter = 0;
-
-            if (this.globalTimer) BackgroundTimer.clearInterval(this.globalTimer);
-
-            this.globalTimer = BackgroundTimer.setInterval(() => {
-                onGlobalTimerTick();
-            }, 1000);
+            this.onSuccessGetGameModel();
         } else if (Number.isInteger(this.gameModel.Event)) {
             this.setActualView('LoadingView');
         } else {
@@ -62,11 +53,27 @@ class GameStore {
     };
 
     @action setActualView = (viewName) => {
-        if (viewName !== 'GameView' && this.globalTimer) {
-            BackgroundTimer.clearInterval(this.globalTimer);
-        }
-
         this.actualView = viewName;
+    };
+
+    @action signOut = () => {
+        this.gameModel = {};
+        this.actualView = 'LoginView';
+        BackgroundTimer.clearInterval(this.globalTimer);
+        asyncStorage.setItem('cookiesValue', '');
+    };
+
+    @action onSuccessGetGameModel = () => {
+        this.setActualView('GameView');
+
+        this.lastUpdateTimestamp = Date.now();
+        this.globalTimerCounter = 0;
+
+        if (this.globalTimer) BackgroundTimer.clearInterval(this.globalTimer);
+
+        this.globalTimer = BackgroundTimer.setInterval(() => {
+            onGlobalTimerTick();
+        }, 1000);
     }
 }
 

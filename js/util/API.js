@@ -17,7 +17,7 @@ class API {
             cookiesValue,
         } = storageValues;
 
-        if (!domainValue || !idGameValue || !cookiesValue) {
+        if (!domainValue || !idGameValue) {
             return {};
         }
 
@@ -28,10 +28,9 @@ class API {
             data: qs.stringify(requestData),
             withCredentials: true,
             maxRedirects: 0,
-            headers: {
+            /* headers: {
                 // Cookie: cookiesValue,
-                'Accept-Language': 'ru',
-            },
+            }, */
         });
 
         response = response.data;

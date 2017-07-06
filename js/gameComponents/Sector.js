@@ -1,13 +1,22 @@
 import React from 'react';
-import { observer } from 'mobx-react/native';
+import { observer, inject } from 'mobx-react/native';
 import { Text, View } from 'react-native';
 
 import Helper from '../util/helper';
 
 import Colors from '../constants/colors';
 
-const Sector = ({ order, name, answerData, isAnswered }) => (
-    <View style={styles.mainContainer}>
+const mapStateToProps = stores => ({
+    actualCode: stores.gameStore.actualCode,
+});
+
+const Sector = ({ order, name, answerData, isAnswered, actualCode }) => (
+    <View
+      style={[
+          styles.mainContainer,
+          { backgroundColor: (isAnswered && Helper.isEqualCode(answerData.Answer, actualCode)) ? Colors.bonus : Colors.background },
+      ]}
+    >
         <View
           style={[
               styles.coloredLabel,
@@ -79,4 +88,4 @@ const styles = {
     },
 };
 
-export default observer(Sector);
+export default inject(mapStateToProps)(observer(Sector));

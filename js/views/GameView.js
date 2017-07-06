@@ -4,7 +4,6 @@ import { observer, inject } from 'mobx-react/native';
 import { Button, Container, Header, Tab, Tabs, Text, Title, ScrollableTab, TabHeading, Icon, Badge } from 'native-base';
 
 import IconEntypo from 'react-native-vector-icons/Entypo';
-import IconMC from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Helper from '../util/helper';
 
@@ -18,7 +17,6 @@ import HintsSection from '../sections/HintsSection';
 import BonusesSection from '../sections/BonusesSection';
 import CodeSection from '../sections/CodeSection';
 
-import asyncStorage from '../util/asyncStorage';
 import gameStore from '../core/stores/gameStore';
 
 
@@ -52,9 +50,7 @@ const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels, Hint
             <Button
               transparent
               onPress={() => {
-                  asyncStorage.setItem('cookiesValue', '');
-                  gameStore.setActualView('LoginView');
-                  gameStore.gameModel = {};
+                  gameStore.signOut();
               }}
               style={styles.menuButton}
             >

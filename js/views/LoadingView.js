@@ -4,13 +4,14 @@ import { observer, inject } from 'mobx-react/native';
 import { Container, Content, Spinner, Button } from 'native-base';
 import LoadingErrorStrings from '../constants/loadingErrorStrings';
 import Colors from '../constants/colors';
-import asyncStorage from "../util/asyncStorage";
+import asyncStorage from '../util/asyncStorage';
 
 const mapStateToProps = stores => ({
     gameModel: stores.gameStore.gameModel,
     updateGameModel: stores.gameStore.updateGameModel,
     setActualView: stores.gameStore.setActualView,
     isRefreshing: stores.gameStore.isRefreshing,
+    signOut: stores.gameStore.signOut,
 });
 
 class LoadingView extends Component {
@@ -26,12 +27,11 @@ class LoadingView extends Component {
     };
 
     logOut = async () => {
-        await asyncStorage.setItem('cookiesValue', '');
-        this.props.setActualView('LoginView');
+        this.props.signOut();
     };
 
     render() {
-        const { gameModel, isRefreshing, setActualView } = this.props;
+        const { gameModel, isRefreshing } = this.props;
 
         return (
             <Container >
@@ -50,14 +50,16 @@ class LoadingView extends Component {
                       primary
                       block
                       disabled={isRefreshing}
+                      style={styles.loadingButton}
                       onPress={this.updateGameModel}
                     >
                         <Text>{'Обновить'}</Text>
                     </Button>
                     <Button
-                        danger
-                        block
-                        onPress={this.logOut}
+                      danger
+                      block
+                      style={styles.loadingButton}
+                      onPress={this.logOut}
                     >
                         <Text>{'Выход'}</Text>
                     </Button>
@@ -83,6 +85,10 @@ const styles = {
 
     spinnerContainer: {
         height: 100,
+    },
+
+    loadingButton: {
+        marginTop: 20,
     },
 };
 
