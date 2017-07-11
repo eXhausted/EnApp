@@ -37,7 +37,7 @@ class HTMLView extends Component {
               ref={(view) => { this.webView = view; }}
               source={{ uri: 'file:///android_asset/HTMLView/defaultHTML.html' }}
               automaticallyAdjustContentInsets={false}
-              renderLoading={() => <Spinner color="blue" />}
+              renderLoading={() => <Spinner color={Colors.blue} />}
               onLoadEnd={() => { this.injectHTML(this.props.html, this.props.shouldReplaceNlToBr); }}
               javaScriptEnable
               startInLoadingState
