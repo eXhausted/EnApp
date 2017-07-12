@@ -17,6 +17,7 @@
     "react": "16.0.0-alpha.12",
     "react-native": "0.46.1",
     "react-native-background-timer": "^1.0.0",
+    "react-native-custom-tabs": "^0.1.5",
     "react-native-push-notification": "^2.2.1",
     "react-native-textinput-effects": "^0.3.1",
     "react-native-vector-icons": "^4.1.1",

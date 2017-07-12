@@ -1,4 +1,11 @@
 import moment from 'moment';
+import {
+    CustomTabs,
+    ANIMATIONS_SLIDE,
+    ANIMATIONS_FADE,
+} from 'react-native-custom-tabs';
+import asyncStorage from './asyncStorage';
+import Colors from '../constants/colors';
 
 class Helper {
     static normalizeHTML(html, shouldReplaceNlToBr = true) {
@@ -68,6 +75,21 @@ class Helper {
 
     static formatWithNewLine(stringArray) {
         return stringArray.join('\n').trim();
+    }
+
+    static async openCustomTab(url) {
+        const cookiesValue = await asyncStorage.getItem('cookiesValue');
+
+        CustomTabs.openURL(url, {
+            toolbarColor: Colors.tabBackground,
+            enableUrlBarHiding: true,
+            showPageTitle: true,
+            enableDefaultShare: true,
+            animations: ANIMATIONS_SLIDE,
+            headers: {
+                Cookie: cookiesValue,
+            },
+        });
     }
 }
 

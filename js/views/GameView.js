@@ -1,7 +1,7 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { observer, inject } from 'mobx-react/native';
-import { Button, Container, Header, Tab, Tabs, Text, Title, ScrollableTab, TabHeading, Icon, Badge } from 'native-base';
+import { Button, Container, Header, Tab, Tabs, Title, ScrollableTab, TabHeading, Icon, Badge } from 'native-base';
 
 import IconEntypo from 'react-native-vector-icons/Entypo';
 
@@ -44,6 +44,14 @@ const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels, Hint
                       start={Level.TimeoutSecondsRemain}
                       textStyle={{ color: Colors.upTime }}
                     />
+                }
+                {
+                    Level.TimeoutAward !== 0 &&
+                    <Text
+                        style={{ color: Colors.wrongCode }}
+                    >
+                        {`(${Helper.formatCount(Math.abs(Level.TimeoutAward), { collapse: true, withUnits: true })})`}
+                    </Text>
                 }
             </View>
             <Title style={styles.levelNumber}>{`${Level.Number} из ${Levels.length}`}</Title>

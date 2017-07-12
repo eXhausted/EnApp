@@ -67,7 +67,7 @@ class LoginView extends Component {
                 await asyncStorage.setItem('cookiesValue', response.headers['set-cookie']);
                 this.props.setActualView('LoadingView');
             } else {
-                ToastAndroid.show(`Ошибка: ${response.data.Message}`, ToastAndroid.SHORT);
+                ToastAndroid.show(`Код: ${response.data.Error}   Ошибка: ${response.data.Message}`, ToastAndroid.SHORT);
             }
         }
     };

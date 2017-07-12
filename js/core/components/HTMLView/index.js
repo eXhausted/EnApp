@@ -12,6 +12,8 @@ class HTMLView extends Component {
         webViewHeight: 1,
     };
 
+    isStillOpeningCustomTub = false;
+
     componentWillReceiveProps(nextProps) {
         this.injectHTML(nextProps.html, nextProps.shouldReplaceNlToBr);
     }
@@ -21,6 +23,17 @@ class HTMLView extends Component {
             this.setState({
                 webViewHeight: data.data,
             });
+        } else if (data.type === 'locationUrl') {
+            // some debounce
+            if (!this.isStillOpeningCustomTub) {
+                this.isStillOpeningCustomTub = true;
+
+                setTimeout(() => {
+                    this.isStillOpeningCustomTub = false;
+                }, 100);
+
+                Helper.openCustomTab(data.data);
+            }
         }
     };
 
@@ -29,6 +42,29 @@ class HTMLView extends Component {
             type: 'setHTML',
             data: Helper.normalizeHTML(html, shouldReplaceNlToBr),
         }));
+    };
+
+    onNavigationStateChange = (event) => {
+        const protocol = event.url.split('://')[0];
+        console.log(Date.now());
+        console.log('change');
+        console.log(event);
+
+        if (protocol !== 'file') {
+            Linking.canOpenURL(event.url).then((isCan) => {
+                if (isCan) {
+                    this.webView.stopLoading();
+                    Linking.openURL(event.url);
+                }
+            });
+        } else {
+            try {
+                const messageData = JSON.parse(event.title);
+                this.onMessage(messageData);
+            } catch (e) {
+
+            }
+        }
     };
 
     render() {
@@ -41,27 +77,7 @@ class HTMLView extends Component {
               onLoadEnd={() => { this.injectHTML(this.props.html, this.props.shouldReplaceNlToBr); }}
               javaScriptEnable
               startInLoadingState
-              onNavigationStateChange={(event) => {
-                  const protocol = event.url.split('://')[0];
-                  console.log('change');
-                  console.log(event);
-
-                  if (protocol !== 'file') {
-                      Linking.canOpenURL(event.url).then((isCan) => {
-                          if (isCan) {
-                              this.webView.stopLoading();
-                              Linking.openURL(event.url);
-                          }
-                      });
-                  } else {
-                      try {
-                          const messageData = JSON.parse(event.title);
-                          this.onMessage(messageData);
-                      } catch (e) {
-
-                      }
-                  }
-              }}
+              onNavigationStateChange={this.onNavigationStateChange}
               style={{ height: this.state.webViewHeight, backgroundColor: Colors.background }}
             />
         );
