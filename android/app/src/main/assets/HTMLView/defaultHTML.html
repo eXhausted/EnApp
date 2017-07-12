@@ -50,7 +50,7 @@
     }
 
     function addHrefOnClickListeners() {
-        var elements = document.querySelectorAll('a');
+        var elements = document.querySelectorAll('a[href^="http"], a[href^="https"]');
         [].forEach.call(elements, function(el) {
             el.onclick = function() {
                 sendMessage('locationUrl', el.getAttribute('href'));
