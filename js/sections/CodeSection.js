@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TextInput, Alert, Text } from 'react-native';
+import { View, TextInput, Alert, Text, Animated, Easing } from 'react-native';
 import { observer, inject } from 'mobx-react/native';
 import { Icon } from 'native-base';
 
@@ -22,6 +22,10 @@ const mapStateToProps = stores => ({
 
 class CodeSection extends Component {
 
+    blockDurationContainerShake = new Animated.Value(0);
+
+    blockDurationContainerShakeOffset = 15;
+
     sendCode = () => {
         const {
             actualCode,
@@ -34,7 +38,16 @@ class CodeSection extends Component {
         const oldCode = oldCodes.find(codeObject => Helper.isEqualCode(codeObject.Answer, actualCode));
 
         if (hasAnswerBlockRule && blockDuration > 0) {
-            return null;
+            this.blockDurationContainerShake.setValue(0);
+
+            Animated.timing(
+                this.blockDurationContainerShake,
+                {
+                    toValue: 10,
+                    duration: 1000,
+                    ease: Easing.bounce,
+                },
+            ).start();
         } else if (hasAnswerBlockRule && oldCode && !oldCode.IsCorrect) {
             Alert.alert(
                 'На уровне ограничение на перебор!',
@@ -63,8 +76,26 @@ class CodeSection extends Component {
         } = this.props;
 
         const oldCode = oldCodes.find(codeObject => Helper.isEqualCode(codeObject.Answer, actualCode));
+        const { blockDurationContainerShakeOffset, blockDurationContainerShake } = this;
         let highlightColor;
         let iconName;
+
+        const interpolateBlockDurationOffset = blockDurationContainerShake.interpolate({
+            inputRange: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            outputRange: [
+                0,
+                -blockDurationContainerShakeOffset,
+                blockDurationContainerShakeOffset,
+                -blockDurationContainerShakeOffset,
+                blockDurationContainerShakeOffset,
+                -blockDurationContainerShakeOffset,
+                blockDurationContainerShakeOffset,
+                -blockDurationContainerShakeOffset,
+                blockDurationContainerShakeOffset,
+                -blockDurationContainerShakeOffset,
+                0,
+            ],
+        });
 
         if (oldCode) {
             if (oldCode.IsCorrect) {
@@ -102,7 +133,16 @@ class CodeSection extends Component {
                 }
                 {
                     (hasAnswerBlockRule && blockDuration > 0) &&
-                    <View style={styles.blockDurationContainer}>
+                    <Animated.View
+                      style={[
+                          styles.blockDurationContainer,
+                          {
+                              transform: [
+                                  { translateX: interpolateBlockDurationOffset },
+                              ],
+                          },
+                      ]}
+                    >
                         <Text
                           style={{ color: Colors.gray }}
                         >
@@ -112,7 +152,7 @@ class CodeSection extends Component {
                           start={blockDuration}
                           textStyle={{ color: Colors.gray }}
                         />
-                    </View>
+                    </Animated.View>
                 }
                 <View style={[styles.inputWrapper, { borderColor: highlightColor }]}>
                     { hasAnswerBlockRule && <Icon style={{ color: Colors.upTime, fontSize: 25, marginHorizontal: 5 }} name="warning" /> }
