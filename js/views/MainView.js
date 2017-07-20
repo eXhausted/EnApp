@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { observer, Provider } from 'mobx-react/native';
 import gameStore from '../core/stores/gameStore';
-import asyncStorage from '../util/asyncStorage';
 
 import GameView from './GameView';
 import LoadingView from './LoadingView';

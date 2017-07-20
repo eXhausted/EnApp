@@ -11,6 +11,7 @@ class GameStore {
     @observable globalTimerCounter = 0;
     @observable isRefreshing = false;
     @observable actualCode = '';
+    @observable actualBonusCode = '';
     @observable lastUpdateTimestamp = Date.now();
     @observable actualView = 'LoadingView';
 
@@ -48,8 +49,22 @@ class GameStore {
         this.updateGameModel(requestData);
     };
 
+    @action sendBonusCode = async () => {
+        const requestData = {
+            LevelId: this.gameModel.Level && this.gameModel.Level.LevelId,
+            LevelNumber: this.gameModel.Level && this.gameModel.Level.Number,
+            'BonusAction.Answer': this.actualBonusCode,
+        };
+
+        this.updateGameModel(requestData);
+    };
+
     @action changeActualCode = (code) => {
         this.actualCode = code;
+    };
+
+    @action changeActualBonusCode = (code) => {
+        this.actualBonusCode = code;
     };
 
     @action setActualView = (viewName) => {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react/native';
-import { View, Text, ToastAndroid } from 'react-native';
+import { View, Text, ToastAndroid, Image } from 'react-native';
 import { Container, Content, Spinner, Button } from 'native-base';
 import { Sae } from 'react-native-textinput-effects';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
@@ -82,6 +82,13 @@ class LoginView extends Component {
 
         return (
             <View style={styles.mainContainer}>
+                <View style={styles.imgContainer}>
+                    <Image
+                      style={styles.imgLogo}
+                      resizeMode="center"
+                      source={require('../images/appIcon.png')}
+                    />
+                </View>
                 <Sae
                   style={styles.inputWrapper}
                   label={'Домен'}
@@ -152,11 +159,21 @@ const styles = {
     },
 
     inputWrapper: {
-        marginTop: 15,
+        marginTop: 12,
     },
 
     buttonWrapper: {
-        marginTop: 50,
+        marginTop: 40,
+    },
+
+    imgContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    imgLogo: {
+        width: 75,
+        height: 75,
     },
 };
 

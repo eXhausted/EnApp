@@ -17,7 +17,7 @@ import HintsSection from '../sections/HintsSection';
 import BonusesSection from '../sections/BonusesSection';
 import CodeSection from '../sections/CodeSection';
 
-import gameStore from '../core/stores/gameStore';
+import onSettingsButtonClick from '../core/events/onSettingsButtonClick';
 
 
 const mapStateToProps = (stores => ({
@@ -57,9 +57,7 @@ const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels, Hint
             <Title style={styles.levelNumber}>{`${Level.Number} из ${Levels.length}`}</Title>
             <Button
               transparent
-              onPress={() => {
-                  gameStore.signOut();
-              }}
+              onPress={onSettingsButtonClick}
               style={styles.menuButton}
             >
                 <IconEntypo style={{ fontSize: 20, color: 'white' }} name="dots-three-vertical" />
