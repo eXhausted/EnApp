@@ -190,7 +190,7 @@ class CodeSection extends Component {
                     <TextInput
                       blurOnSubmit
                       selectTextOnFocus
-                      autoCorrect={false}
+                      autoCorrect={!hasAnswerBlockRule}
                       underlineColorAndroid="transparent"
                       returnKeyType="send"
                       placeholder="Код"
@@ -208,7 +208,7 @@ class CodeSection extends Component {
                         <TextInput
                           blurOnSubmit
                           selectTextOnFocus
-                          autoCorrect={false}
+                          autoCorrect
                           underlineColorAndroid="transparent"
                           returnKeyType="send"
                           placeholder="Бонус"

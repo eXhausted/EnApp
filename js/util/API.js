@@ -22,7 +22,7 @@ class API {
         }
 
         let response = await axios({
-            url: `http://${domainValue}/gameengines/encounter/play/${idGameValue}?json=1`,
+            url: `http://${domainValue}/gameengines/encounter/play/${idGameValue}?json=1&lang=ru`,
             method: 'post',
             timeout: 12000,
             data: qs.stringify(requestData),
@@ -46,7 +46,7 @@ class API {
         ]);
 
         const response = await axios({
-            url: `http://${storageValues.domainValue}/login/signin?json=1`,
+            url: `http://${storageValues.domainValue}/login/signin?json=1&lang=ru`,
             method: 'post',
             data: {
                 Login: storageValues.loginValue,

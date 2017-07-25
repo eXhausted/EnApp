@@ -37,16 +37,20 @@ const TaskSections = ({ Level, gameStore: { isRefreshing, updateGameModel } }) =
           style={styles.mainContent}
         >
             {
-                Level.Name
-                    ? <Text style={styles.levelName}>{Level.Name}</Text>
-                    : null
+                Level.Name ?
+                    <Text style={styles.levelName}>{Level.Name}</Text> :
+                    null
             }
-            <View style={styles.taskWrapper}>
-                <HTMLView
-                  html={Level.Tasks[0].TaskText}
-                  shouldReplaceNlToBr={Level.Tasks[0].ReplaceNlToBr}
-                />
-            </View>
+            {
+                (Level.Tasks.length && Level.Tasks[0]) ?
+                    <View style={styles.taskWrapper}>
+                        <HTMLView
+                          html={Level.Tasks[0].TaskText}
+                          shouldReplaceNlToBr={Level.Tasks[0].ReplaceNlToBr}
+                        />
+                    </View> :
+                    null
+            }
         </View>
     </ScrollView>
 );

@@ -1,3 +1,4 @@
 export default {
     REFRESH_INTERVAL_SECONDS: 30,
+    GAME_MODAL_EVENTS_FOR_UPDATE: [16, 18, 19, 20, 21, 22],
 };

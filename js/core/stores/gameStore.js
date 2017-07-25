@@ -2,6 +2,8 @@ import { action, observable } from 'mobx';
 import BackgroundTimer from 'react-native-background-timer';
 import onGlobalTimerTick from '../../core/events/onGlobalTimerTick';
 
+import globals from '../../constants/globals';
+
 import API from '../../util/API';
 import asyncStorage from '../../util/asyncStorage';
 
@@ -20,22 +22,29 @@ class GameStore {
     @action updateGameModel = async (requestData) => {
         if (this.isRefreshing) return;
 
+        let gameModelBuffer = {};
+
         this.isRefreshing = true;
 
         try {
-            this.gameModel = await API.getGameModal(requestData);
+            gameModelBuffer = await API.getGameModal(requestData);
             this.isRefreshing = false;
         } catch (e) {
             this.isRefreshing = false;
             return;
         }
 
-        if (this.gameModel.Event === 0) {
+        if (globals.GAME_MODAL_EVENTS_FOR_UPDATE.includes(gameModelBuffer.Event)) {
+            this.updateGameModel();
+        } else if (gameModelBuffer.Event === 0) {
+            this.gameModel = gameModelBuffer;
             this.onSuccessGetGameModel();
-        } else if (Number.isInteger(this.gameModel.Event)) {
+        } else if (Number.isInteger(gameModelBuffer.Event)) {
+            this.gameModel = gameModelBuffer;
             this.setActualView('LoadingView');
         } else {
             this.setActualView('LoginView');
+            this.gameModel = {};
         }
     };
 
