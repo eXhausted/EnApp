@@ -186,7 +186,7 @@ class CodeSection extends Component {
                     </Animated.View>
                 }
                 <View style={[styles.inputWrapper, { borderColor: highlightColor }]}>
-                    { hasAnswerBlockRule && <Icon style={Object.assign(styles.inputIcon, { color: Colors.upTime })} name="warning" /> }
+                    { hasAnswerBlockRule && <Icon style={Object.assign({}, styles.inputIcon, { color: Colors.upTime })} name="warning" /> }
                     <TextInput
                       blurOnSubmit
                       selectTextOnFocus
@@ -200,7 +200,7 @@ class CodeSection extends Component {
                       value={actualCode}
                       style={[styles.codeInput, { color: highlightColor }]}
                     />
-                    { oldCode && <Icon style={Object.assign(styles.inputIcon, { color: highlightColor })} name={iconName} /> }
+                    { oldCode && <Icon style={Object.assign({}, styles.inputIcon, { color: highlightColor })} name={iconName} /> }
                 </View>
                 {
                     (hasAnswerBlockRule && bonuses.find(bonus => !bonus.IsAnswered)) &&
@@ -218,7 +218,7 @@ class CodeSection extends Component {
                           value={actualBonusCode}
                           style={[styles.codeInput, { color: highlightBonusColor }]}
                         />
-                        { oldBonusCode && <Icon style={Object.assign(styles.inputIcon, { color: highlightBonusColor })} name={bonusIconName} /> }
+                        { oldBonusCode && <Icon style={Object.assign({}, styles.inputIcon, { color: highlightBonusColor })} name={bonusIconName} /> }
                     </View>
                 }
             </View>
