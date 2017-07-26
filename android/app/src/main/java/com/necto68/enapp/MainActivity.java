@@ -1,4 +1,4 @@
-package com.enapp;
+package com.necto68.enapp;
 
 import com.facebook.react.ReactActivity;
 
