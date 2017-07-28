@@ -40,8 +40,8 @@ class GameStore {
             this.gameModel = gameModelBuffer;
             this.onSuccessGetGameModel();
         } else if (Number.isInteger(gameModelBuffer.Event)) {
-            this.gameModel = gameModelBuffer;
             this.setActualView('LoadingView');
+            this.gameModel = gameModelBuffer;
         } else {
             this.setActualView('LoginView');
             this.gameModel = {};
