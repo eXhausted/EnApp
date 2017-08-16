@@ -15,7 +15,6 @@ const mapStateToProps = stores => ({
 });
 
 class LoadingView extends Component {
-
     componentDidMount() {
         this.updateGameModel();
     }
@@ -47,19 +46,19 @@ class LoadingView extends Component {
                         { isRefreshing && <Spinner color={Colors.blue} /> }
                     </View>
                     <Button
-                      primary
-                      block
-                      disabled={isRefreshing}
-                      style={styles.loadingButton}
-                      onPress={this.updateGameModel}
+                        primary
+                        block
+                        disabled={isRefreshing}
+                        style={styles.loadingButton}
+                        onPress={this.updateGameModel}
                     >
                         <Text>{'Обновить'}</Text>
                     </Button>
                     <Button
-                      danger
-                      block
-                      style={styles.loadingButton}
-                      onPress={this.logOut}
+                        danger
+                        block
+                        style={styles.loadingButton}
+                        onPress={this.logOut}
                     >
                         <Text>{'Выход'}</Text>
                     </Button>

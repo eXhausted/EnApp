@@ -34,15 +34,15 @@ const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels, Hint
         <Header style={styles.headerStyle} hasTabs>
             <View style={styles.timersContainer}>
                 <CountableText
-                  increment
-                  start={(lastUpdateTimestamp - Helper.normalizeTime(Level.StartTime.Value)) / 1000}
-                  textStyle={{ color: Colors.white }}
+                    increment
+                    start={(lastUpdateTimestamp - Helper.normalizeTime(Level.StartTime.Value)) / 1000}
+                    textStyle={{ color: Colors.white }}
                 />
                 {
                     Level.Timeout > 0 &&
                     <CountableText
-                      start={Level.TimeoutSecondsRemain}
-                      textStyle={{ color: Colors.upTime }}
+                        start={Level.TimeoutSecondsRemain}
+                        textStyle={{ color: Colors.upTime }}
                     />
                 }
                 {
@@ -56,35 +56,38 @@ const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels, Hint
             </View>
             <Title style={styles.levelNumber}>{`${Level.Number} из ${Levels.length}`}</Title>
             <Button
-              transparent
-              onPress={onSettingsButtonClick}
-              style={styles.menuButton}
+                transparent
+                onPress={onSettingsButtonClick}
+                style={styles.menuButton}
             >
                 <IconEntypo style={{ fontSize: 20, color: 'white' }} name="dots-three-vertical" />
             </Button>
         </Header>
         <Tabs
-          locked
-          renderTabBar={() => <ScrollableTab backgroundColor={Colors.tabBackground} />}
+            locked
+            renderTabBar={() => <ScrollableTab backgroundColor={Colors.tabBackground} />}
         >
             <Tab
-              heading={
-                  Helper.formatWithNewLine([
-                      'ЗАДАНИЕ',
-                      Level.Messages.length > 0 ? `(${Level.Messages.length})` : '',
-                  ])
-              }
-              textStyle={styles.tabText}
-              activeTextStyle={styles.tabText}
+                heading={
+                    Helper.formatWithNewLine([
+                        'ЗАДАНИЕ',
+                        Level.Messages.length > 0 ? `(${Level.Messages.length})` : '',
+                    ])
+                }
+                textStyle={styles.tabText}
+                activeTextStyle={styles.tabText}
             >
                 <TaskSection />
             </Tab>
             {
                 Level.SectorsLeftToClose > 0 &&
                 <Tab
-                  heading={Helper.formatWithNewLine(['СЕКТОРЫ', `(${Level.SectorsLeftToClose})`])}
-                  textStyle={styles.tabText}
-                  activeTextStyle={styles.tabText}
+                    heading={Helper.formatWithNewLine([
+                        'СЕКТОРЫ',
+                        `(${Level.SectorsLeftToClose})`,
+                    ])}
+                    textStyle={styles.tabText}
+                    activeTextStyle={styles.tabText}
                 >
                     <SectorsSection />
                 </Tab>
@@ -92,14 +95,24 @@ const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels, Hint
             {
                 Hints.length > 0 &&
                 <Tab
-                  heading={
-                      Helper.formatWithNewLine([
-                          'ПОДСКАЗКИ',
-                          // Hints.find(hint => hint.RemainSeconds > 0) ? `(${Hints.find(hint => hint.RemainSeconds > 0).RemainSeconds})` : '',
-                      ])
-                  }
-                  textStyle={styles.tabText}
-                  activeTextStyle={styles.tabText}
+                    heading={
+                        Helper.formatWithNewLine([
+                            'ПОДСКАЗКИ',
+                            Hints.find(hint => hint.RemainSeconds > 0) ?
+                                [
+                                    '(',
+                                    Hints.find(hint => hint.RemainSeconds > 0).Number - 1,
+                                    '/',
+                                    Hints.length,
+                                    // ' - ',
+                                    // Helper.formatCount(Hints.find(hint => hint.RemainSeconds > 0).RemainSeconds - globalTimerCounter),
+                                    ')',
+                                ].join('')
+                                : `(${Hints.length}/${Hints.length})`,
+                        ])
+                    }
+                    textStyle={styles.tabText}
+                    activeTextStyle={styles.tabText}
                 >
                     <HintsSection />
                 </Tab>
@@ -107,14 +120,14 @@ const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels, Hint
             {
                 Bonuses.length > 0 &&
                 <Tab
-                  heading={
-                      Helper.formatWithNewLine([
-                          'БОНУСЫ',
-                          `(${Bonuses.filter(bonus => bonus.IsAnswered).length}/${Bonuses.length})`,
-                      ])
-                  }
-                  textStyle={styles.tabText}
-                  activeTextStyle={styles.tabText}
+                    heading={
+                        Helper.formatWithNewLine([
+                            'БОНУСЫ',
+                            `(${Bonuses.filter(bonus => bonus.IsAnswered).length}/${Bonuses.length})`,
+                        ])
+                    }
+                    textStyle={styles.tabText}
+                    activeTextStyle={styles.tabText}
                 >
                     <BonusesSection />
                 </Tab>

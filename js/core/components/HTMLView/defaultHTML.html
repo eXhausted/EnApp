@@ -35,7 +35,7 @@
 
     function sendMessage(type, data) {
         document.title = JSON.stringify({ type: type, data: data });
-        window.location.hash = Date.now();
+        window.location.hash = `${Math.random()}${Date.now()}`;
     }
 
     function sendContentHeight() {
@@ -49,6 +49,16 @@
         });
     }
 
+    function addHrefOnClickListeners() {
+        var elements = document.querySelectorAll('a[href^="http"], a[href^="https"]');
+        [].forEach.call(elements, function(el) {
+            el.onclick = function() {
+                sendMessage('locationUrl', el.getAttribute('href'));
+                return false;
+            };
+        });
+    }
+
     var injectedHTML = '';
 
     document.addEventListener('message', function(e) {
@@ -58,6 +68,7 @@
             injectedHTML = data.data;
             setHTML(injectedHTML);
             addOnLoadListeners();
+            addHrefOnClickListeners();
             sendContentHeight();
         }
     });

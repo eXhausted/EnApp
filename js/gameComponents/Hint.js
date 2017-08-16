@@ -10,17 +10,17 @@ import HTMLView from '../core/components/HTMLView';
 const Hint = ({ number, hintText, remainSeconds }) => (
     <View style={styles.mainContainer}>
         <View
-          style={[
-              styles.coloredLabel,
+            style={[
+                styles.coloredLabel,
                 { backgroundColor: remainSeconds === 0 ? Colors.green : Colors.gray },
-          ]}
+            ]}
         />
         <View style={styles.messageContainer}>
             <Text
-              style={[
-                  styles.authorLogin,
-                { color: remainSeconds === 0 ? Colors.yellow : Colors.white },
-              ]}
+                style={[
+                    styles.authorLogin,
+                    { color: remainSeconds === 0 ? Colors.yellow : Colors.white },
+                ]}
             >
                 {`Подсказка ${number}`}
             </Text>

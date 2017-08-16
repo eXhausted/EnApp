@@ -9,11 +9,11 @@ import HTMLView from '../core/components/HTMLView';
 const AuthorMessage = ({ authorLogin, messageText, replaceNl2Br }) => (
     <View style={styles.mainContainer}>
         <View
-          style={styles.coloredLabel}
+            style={styles.coloredLabel}
         />
         <View style={styles.messageContainer}>
             <Text
-              style={styles.authorLogin}
+                style={styles.authorLogin}
             >
                 {`${authorLogin}:`}
             </Text>

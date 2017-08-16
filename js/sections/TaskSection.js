@@ -13,28 +13,28 @@ const mapStateToProps = stores => ({
 
 const TaskSections = ({ Level, gameStore: { isRefreshing, updateGameModel } }) => (
     <ScrollView
-      style={styles.scroll}
-      contentContainerStyle={styles.scrollContent}
-      refreshControl={
-          <RefreshControl
-            refreshing={isRefreshing}
-            onRefresh={updateGameModel}
-          />
-      }
+        style={styles.scroll}
+        contentContainerStyle={styles.scrollContent}
+        refreshControl={
+            <RefreshControl
+                refreshing={isRefreshing}
+                onRefresh={updateGameModel}
+            />
+        }
     >
         {
             Level.Messages.length > 0
                 ? Level.Messages.map(message =>
-                    <AuthorMessage
-                      key={message.MessageId}
-                      authorLogin={message.OwnerLogin}
-                      messageText={message.MessageText}
-                      replaceNl2Br={message.ReplaceNl2Br}
-                    />)
+                    (<AuthorMessage
+                        key={message.MessageId}
+                        authorLogin={message.OwnerLogin}
+                        messageText={message.MessageText}
+                        replaceNl2Br={message.ReplaceNl2Br}
+                    />))
                 : null
         }
         <View
-          style={styles.mainContent}
+            style={styles.mainContent}
         >
             {
                 Level.Name ?
@@ -45,8 +45,8 @@ const TaskSections = ({ Level, gameStore: { isRefreshing, updateGameModel } }) =
                 (Level.Tasks.length && Level.Tasks[0]) ?
                     <View style={styles.taskWrapper}>
                         <HTMLView
-                          html={Level.Tasks[0].TaskText}
-                          shouldReplaceNlToBr={Level.Tasks[0].ReplaceNlToBr}
+                            html={Level.Tasks[0].TaskText}
+                            shouldReplaceNlToBr={Level.Tasks[0].ReplaceNlToBr}
                         />
                     </View> :
                     null

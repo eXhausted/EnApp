@@ -13,7 +13,6 @@ const mapStateToProps = stores => ({
 });
 
 class LoginView extends Component {
-
     state = {
         domainValue: '',
         idGameValue: '',
@@ -84,64 +83,64 @@ class LoginView extends Component {
             <View style={styles.mainContainer}>
                 <View style={styles.imgContainer}>
                     <Image
-                      style={styles.imgLogo}
-                      resizeMode="center"
-                      source={require('../images/appIcon.png')}
+                        style={styles.imgLogo}
+                        resizeMode="center"
+                        source={require('../images/appIcon.png')}
                     />
                 </View>
                 <Sae
-                  style={styles.inputWrapper}
-                  label={'Домен'}
-                  value={domainValue}
-                  onChangeText={value => this.onInputChange('domainValue', value)}
-                  iconClass={FontAwesomeIcon}
-                  iconName={'globe'}
-                  iconColor={'#f95a25'}
-                  autoCapitalize={'none'}
+                    style={styles.inputWrapper}
+                    label={'Домен'}
+                    value={domainValue}
+                    onChangeText={value => this.onInputChange('domainValue', value)}
+                    iconClass={FontAwesomeIcon}
+                    iconName={'globe'}
+                    iconColor={'#f95a25'}
+                    autoCapitalize={'none'}
                 />
                 <Sae
-                  style={styles.inputWrapper}
-                  label={'ID игры'}
-                  value={idGameValue}
-                  onChangeText={value => this.onInputChange('idGameValue', value)}
-                  iconClass={FontAwesomeIcon}
-                  iconName={'list-ol'}
-                  iconColor={'#f95a25'}
-                  autoCapitalize={'none'}
-                  keyboardType={'numeric'}
+                    style={styles.inputWrapper}
+                    label={'ID игры'}
+                    value={idGameValue}
+                    onChangeText={value => this.onInputChange('idGameValue', value)}
+                    iconClass={FontAwesomeIcon}
+                    iconName={'list-ol'}
+                    iconColor={'#f95a25'}
+                    autoCapitalize={'none'}
+                    keyboardType={'numeric'}
                 />
                 <Sae
-                  style={styles.inputWrapper}
-                  label={'Логин'}
-                  value={loginValue}
-                  onChangeText={value => this.onInputChange('loginValue', value)}
-                  iconClass={FontAwesomeIcon}
-                  iconName={'user'}
-                  iconColor={'#f95a25'}
-                  autoCapitalize={'none'}
+                    style={styles.inputWrapper}
+                    label={'Логин'}
+                    value={loginValue}
+                    onChangeText={value => this.onInputChange('loginValue', value)}
+                    iconClass={FontAwesomeIcon}
+                    iconName={'user'}
+                    iconColor={'#f95a25'}
+                    autoCapitalize={'none'}
                 />
                 <Sae
-                  style={styles.inputWrapper}
-                  label={'Пароль'}
-                  value={passwordValue}
-                  onChangeText={value => this.onInputChange('passwordValue', value)}
-                  iconClass={FontAwesomeIcon}
-                  iconName={'key'}
-                  iconColor={'#f95a25'}
-                  autoCapitalize={'none'}
-                  secureTextEntry
+                    style={styles.inputWrapper}
+                    label={'Пароль'}
+                    value={passwordValue}
+                    onChangeText={value => this.onInputChange('passwordValue', value)}
+                    iconClass={FontAwesomeIcon}
+                    iconName={'key'}
+                    iconColor={'#f95a25'}
+                    autoCapitalize={'none'}
+                    secureTextEntry
                 />
                 <Button
-                  primary
-                  block
-                  disabled={
-                      !domainValue ||
+                    primary
+                    block
+                    disabled={
+                        !domainValue ||
                       !idGameValue ||
                       !loginValue ||
                       !passwordValue
-                  }
-                  onPress={this.signIn}
-                  style={styles.buttonWrapper}
+                    }
+                    onPress={this.signIn}
+                    style={styles.buttonWrapper}
                 >
                     <Text>{'Вход'}</Text>
                 </Button>

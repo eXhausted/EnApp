@@ -12,16 +12,14 @@ import CountableText from '../core/components/CountableText';
 const Bonus = ({ number, name, task, isAnswered, answerData, hint, awardTime, expired, secondsToStart, secondsLeft }) => (
     <View style={styles.mainContainer}>
         <View
-          style={[
-              styles.coloredLabel,
-              { backgroundColor:
+            style={[
+                styles.coloredLabel,
+                { backgroundColor:
                     do {
-                        if (expired || secondsToStart > 0) { Colors.gray }
-                        else if (isAnswered) { Colors.green }
-                        else { Colors.wrongCode }
+                        if (expired || secondsToStart > 0) { Colors.gray; } else if (isAnswered) { Colors.green; } else { Colors.wrongCode; }
                     },
-              },
-          ]}
+                },
+            ]}
         />
         <View style={styles.bonusContentWrapper}>
             <View style={{ flexDirection: 'row' }}>
@@ -35,17 +33,14 @@ const Bonus = ({ number, name, task, isAnswered, answerData, hint, awardTime, ex
                     )}
                     <View style={{ flexDirection: 'row' }}>
                         <Text
-                          style={[
-                              styles.bonusValue,
-                              { color: isAnswered ? Colors.rightCode : Colors.gray },
-                          ]}
+                            style={[
+                                styles.bonusValue,
+                                { color: isAnswered ? Colors.rightCode : Colors.gray },
+                            ]}
                         >
                             {
                                 do {
-                                    if (expired) { 'время выполнения истекло' }
-                                    else if (secondsToStart > 0) { 'будет доступен через ' }
-                                    else if (isAnswered) { answerData.Answer }
-                                    else { '—' }
+                                    if (expired) { 'время выполнения истекло'; } else if (secondsToStart > 0) { 'будет доступен через '; } else if (isAnswered) { answerData.Answer; } else { '—'; }
                                 }
                             }
                         </Text>
@@ -66,10 +61,10 @@ const Bonus = ({ number, name, task, isAnswered, answerData, hint, awardTime, ex
                 </View>
                 { isAnswered && (
                     <View
-                      style={[
-                          styles.bonusContainer,
-                          { alignItems: 'flex-end', flex: 1 },
-                      ]}
+                        style={[
+                            styles.bonusContainer,
+                            { alignItems: 'flex-end', flex: 1 },
+                        ]}
                     >
                         <Text style={styles.bonusInfo}>{ Helper.formatTime(answerData.AnswerDateTime.Value) }</Text>
                         <Text style={[styles.bonusInfo, { marginTop: 2 }]}>{answerData.Login}</Text>

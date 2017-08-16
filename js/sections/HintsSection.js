@@ -11,18 +11,18 @@ const mapStateToProps = stores => ({
 
 const HintsSection = ({ hints, gameStore: { isRefreshing, updateGameModel } }) => (
     <FlatList
-      data={hints}
-      renderItem={({ item }) => (
-          <Hint
-            number={item.Number}
-            hintText={item.HelpText}
-            remainSeconds={item.RemainSeconds}
-          />)
+        data={hints}
+        renderItem={({ item }) => (
+            <Hint
+                number={item.Number}
+                hintText={item.HelpText}
+                remainSeconds={item.RemainSeconds}
+            />)
         }
-      keyExtractor={hint => hint.HelpId}
-      refreshing={isRefreshing}
-      onRefresh={updateGameModel}
-      style={styles.mainContainer}
+        keyExtractor={hint => hint.HelpId}
+        refreshing={isRefreshing}
+        onRefresh={updateGameModel}
+        style={styles.mainContainer}
     />
 );
 

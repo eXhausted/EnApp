@@ -8,6 +8,8 @@ import Helper from '../util/helper';
 import Colors from '../constants/colors';
 import CountableText from '../core/components/CountableText';
 
+import MonitoringSection from './MonitoringSection';
+
 const mapStateToProps = stores => ({
     actualCode: stores.gameStore.actualCode,
     actualBonusCode: stores.gameStore.actualBonusCode,
@@ -25,7 +27,6 @@ const mapStateToProps = stores => ({
 });
 
 class CodeSection extends Component {
-
     blockDurationContainerShake = new Animated.Value(0);
 
     blockDurationContainerShakeOffset = 15;
@@ -146,77 +147,85 @@ class CodeSection extends Component {
 
         return (
             <View style={styles.mainContainer}>
+                { 1 === 0 &&
+                <Animated.View style={{ height: 300 }}>
+                    <MonitoringSection />
+                </Animated.View>
+                }
                 {
                     hasAnswerBlockRule &&
                     <View
-                      style={styles.blockRuleContainer}
+                        style={styles.blockRuleContainer}
                     >
                         <Text
-                          style={styles.blockRuleText}
+                            style={styles.blockRuleText}
                         >
                             {`Не более ${attemtsNumber} попыток за ${Helper.formatCount(attemtsPeriod, { withUnits: true, collapse: true })} для`}
                         </Text>
                         <Icon
-                          name={blockTargetId === 2 ? 'people' : 'person'}
-                          style={{ color: Colors.upTime, fontSize: 19, marginHorizontal: 5 }}
+                            name={blockTargetId === 2 ? 'people' : 'person'}
+                            style={{ color: Colors.upTime, fontSize: 19, marginHorizontal: 5 }}
                         />
                     </View>
                 }
                 {
                     (hasAnswerBlockRule && blockDuration > 0) &&
                     <Animated.View
-                      style={[
-                          styles.blockDurationContainer,
-                          {
-                              transform: [
-                                  { translateX: interpolateBlockDurationOffset },
-                              ],
-                          },
-                      ]}
+                        style={[
+                            styles.blockDurationContainer,
+                            {
+                                transform: [
+                                    { translateX: interpolateBlockDurationOffset },
+                                ],
+                            },
+                        ]}
                     >
                         <Text
-                          style={{ color: Colors.gray }}
+                            style={{ color: Colors.gray }}
                         >
                             {'осталось '}
                         </Text>
                         <CountableText
-                          start={blockDuration}
-                          textStyle={{ color: Colors.gray }}
+                            start={blockDuration}
+                            textStyle={{ color: Colors.gray }}
                         />
                     </Animated.View>
                 }
-                <View style={[styles.inputWrapper, { borderColor: highlightColor }]}>
-                    { hasAnswerBlockRule && <Icon style={Object.assign({}, styles.inputIcon, { color: Colors.upTime })} name="warning" /> }
-                    <TextInput
-                      blurOnSubmit
-                      selectTextOnFocus
-                      autoCorrect={!hasAnswerBlockRule}
-                      underlineColorAndroid="transparent"
-                      returnKeyType="send"
-                      placeholder="Код"
-                      placeholderTextColor={Colors.gray}
-                      onChangeText={code => changeActualCode(code)}
-                      onSubmitEditing={this.sendCode}
-                      value={actualCode}
-                      style={[styles.codeInput, { color: highlightColor }]}
-                    />
-                    { oldCode && <Icon style={Object.assign({}, styles.inputIcon, { color: highlightColor })} name={iconName} /> }
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Icon style={Object.assign({}, styles.inputIcon, { color: 'white' })} name="list-box" />
+                    <View style={[styles.inputWrapper, { borderColor: highlightColor, flex: 1 }]}>
+                        { hasAnswerBlockRule && <Icon style={Object.assign({}, styles.inputIcon, { color: Colors.upTime })} name="warning" /> }
+                        <TextInput
+                            blurOnSubmit
+                            selectTextOnFocus
+                            autoCorrect={!hasAnswerBlockRule}
+                            underlineColorAndroid="transparent"
+                            returnKeyType="send"
+                            placeholder="Код"
+                            placeholderTextColor={Colors.gray}
+                            onChangeText={code => changeActualCode(code)}
+                            onSubmitEditing={this.sendCode}
+                            value={actualCode}
+                            style={[styles.codeInput, { color: highlightColor }]}
+                        />
+                        { oldCode && <Icon style={Object.assign({}, styles.inputIcon, { color: highlightColor })} name={iconName} /> }
+                    </View>
                 </View>
                 {
                     (hasAnswerBlockRule && bonuses.find(bonus => !bonus.IsAnswered)) &&
                     <View style={[styles.inputWrapper, { borderColor: highlightBonusColor, marginTop: 5 }]}>
                         <TextInput
-                          blurOnSubmit
-                          selectTextOnFocus
-                          autoCorrect
-                          underlineColorAndroid="transparent"
-                          returnKeyType="send"
-                          placeholder="Бонус"
-                          placeholderTextColor={Colors.gray}
-                          onChangeText={code => changeActualBonusCode(code)}
-                          onSubmitEditing={sendBonusCode}
-                          value={actualBonusCode}
-                          style={[styles.codeInput, { color: highlightBonusColor }]}
+                            blurOnSubmit
+                            selectTextOnFocus
+                            autoCorrect
+                            underlineColorAndroid="transparent"
+                            returnKeyType="send"
+                            placeholder="Бонус"
+                            placeholderTextColor={Colors.gray}
+                            onChangeText={code => changeActualBonusCode(code)}
+                            onSubmitEditing={sendBonusCode}
+                            value={actualBonusCode}
+                            style={[styles.codeInput, { color: highlightBonusColor }]}
                         />
                         { oldBonusCode && <Icon style={Object.assign({}, styles.inputIcon, { color: highlightBonusColor })} name={bonusIconName} /> }
                     </View>
@@ -228,8 +237,6 @@ class CodeSection extends Component {
 
 const styles = {
     mainContainer: {
-        justifyContent: 'center',
-        alignItems: 'center',
         backgroundColor: Colors.background,
         padding: 3,
     },
@@ -262,10 +269,13 @@ const styles = {
 
     blockDurationContainer: {
         flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 
     inputIcon: {
         fontSize: 25,
+        width: 25,
         marginHorizontal: 5,
     },
 };

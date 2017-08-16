@@ -33,24 +33,24 @@ class SectorsSection extends Component {
                 <View style={styles.switchContainer}>
                     <Text style={styles.switchTitle}>{'Скрыть выполненные'}</Text>
                     <Switch
-                      value={this.state.hideIsAnswered}
-                      onValueChange={this.onChangeHideSwitch}
-                      tintColor={Colors.gray}
+                        value={this.state.hideIsAnswered}
+                        onValueChange={this.onChangeHideSwitch}
+                        tintColor={Colors.gray}
                     />
                 </View>
                 <FlatList
-                  data={sectors}
-                  renderItem={({ item }) => (
-                      <Sector
-                        order={item.Order}
-                        name={item.Name}
-                        answerData={item.Answer}
-                        isAnswered={item.IsAnswered}
-                      />)
-                }
-                  keyExtractor={sector => sector.SectorId}
-                  refreshing={isRefreshing}
-                  onRefresh={updateGameModel}
+                    data={sectors}
+                    renderItem={({ item }) => (
+                        <Sector
+                            order={item.Order}
+                            name={item.Name}
+                            answerData={item.Answer}
+                            isAnswered={item.IsAnswered}
+                        />)
+                    }
+                    keyExtractor={sector => sector.SectorId}
+                    refreshing={isRefreshing}
+                    onRefresh={updateGameModel}
                 />
             </View>
         );

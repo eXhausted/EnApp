@@ -7,10 +7,12 @@ import Colors from '../../../constants/colors';
 
 @observer
 class HTMLView extends Component {
-
     state = {
         webViewHeight: 1,
     };
+
+    // eslint-disable-next-line
+    DEFAULT_HTML_URI = require('./defaultHTML.html');
 
     isStillOpeningCustomTub = false;
 
@@ -24,7 +26,7 @@ class HTMLView extends Component {
                 webViewHeight: data.data,
             });
         } else if (data.type === 'locationUrl') {
-            // some debounce
+        // some debounce
             if (!this.isStillOpeningCustomTub) {
                 this.isStillOpeningCustomTub = true;
 
@@ -46,11 +48,14 @@ class HTMLView extends Component {
 
     onNavigationStateChange = (event) => {
         const protocol = event.url.split('://')[0];
+        let hostname = event.url.match(/:\/\/([a-z0-9]+):/);
+        hostname = hostname && hostname[1];
+
         console.log(Date.now());
         console.log('change');
         console.log(event);
 
-        if (protocol !== 'file') {
+        if (protocol !== 'file' && hostname !== 'localhost') {
             Linking.canOpenURL(event.url).then((isCan) => {
                 if (isCan) {
                     this.webView.stopLoading();
@@ -70,15 +75,15 @@ class HTMLView extends Component {
     render() {
         return (
             <WebView
-              ref={(view) => { this.webView = view; }}
-              source={{ uri: 'file:///android_asset/HTMLView/defaultHTML.html' }}
-              automaticallyAdjustContentInsets={false}
-              renderLoading={() => <Spinner color={Colors.blue} />}
-              onLoadEnd={() => { this.injectHTML(this.props.html, this.props.shouldReplaceNlToBr); }}
-              javaScriptEnable
-              startInLoadingState
-              onNavigationStateChange={this.onNavigationStateChange}
-              style={{ height: this.state.webViewHeight, backgroundColor: Colors.background }}
+                ref={(view) => { this.webView = view; }}
+                source={this.DEFAULT_HTML_URI}
+                automaticallyAdjustContentInsets={false}
+                renderLoading={() => <Spinner color={Colors.blue} />}
+                onLoadEnd={() => { this.injectHTML(this.props.html, this.props.shouldReplaceNlToBr); }}
+                javaScriptEnable
+                startInLoadingState
+                onNavigationStateChange={this.onNavigationStateChange}
+                style={{ height: this.state.webViewHeight, backgroundColor: Colors.background }}
             />
         );
     }

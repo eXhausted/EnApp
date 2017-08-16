@@ -11,25 +11,25 @@ const mapStateToProps = stores => ({
 
 const BonusesSection = ({ bonuses, gameStore: { isRefreshing, updateGameModel } }) => (
     <FlatList
-      data={bonuses}
-      renderItem={({ item }) => (
-          <Bonus
-            number={item.Number}
-            name={item.Name}
-            task={item.Task}
-            isAnswered={item.IsAnswered}
-            answerData={item.Answer}
-            hint={item.Help}
-            awardTime={item.AwardTime}
-            expired={item.Expired}
-            secondsToStart={item.SecondsToStart}
-            secondsLeft={item.SecondsLeft}
-          />)
+        data={bonuses}
+        renderItem={({ item }) => (
+            <Bonus
+                number={item.Number}
+                name={item.Name}
+                task={item.Task}
+                isAnswered={item.IsAnswered}
+                answerData={item.Answer}
+                hint={item.Help}
+                awardTime={item.AwardTime}
+                expired={item.Expired}
+                secondsToStart={item.SecondsToStart}
+                secondsLeft={item.SecondsLeft}
+            />)
         }
-      keyExtractor={bonus => bonus.BonusId}
-      refreshing={isRefreshing}
-      onRefresh={updateGameModel}
-      style={styles.mainContainer}
+        keyExtractor={bonus => bonus.BonusId}
+        refreshing={isRefreshing}
+        onRefresh={updateGameModel}
+        style={styles.mainContainer}
     />
 );
 

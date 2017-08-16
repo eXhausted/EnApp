@@ -7,44 +7,57 @@ import Helper from '../util/helper';
 import Colors from '../constants/colors';
 
 const mapStateToProps = stores => ({
-    actualCode: stores.gameStore.actualCode,
+    localUserId: stores.gameStore.gameModel.UserId,
 });
 
-const Sector = ({ order, name, answerData, isAnswered, actualCode }) => (
+const MonitoringItem = ({ login, userId, kind, answer, enterLocalTime, isCorrect, localUserId }) => (
     <View
         style={[
             styles.mainContainer,
-            { backgroundColor: (isAnswered && Helper.isEqualCode(answerData.Answer, actualCode)) ? Colors.bonus : Colors.background },
+            { backgroundColor: userId === localUserId ? Colors.gray : Colors.background },
         ]}
     >
         <View
             style={[
                 styles.coloredLabel,
-                { backgroundColor: isAnswered ? Colors.green : Colors.wrongCode },
+                { backgroundColor: isCorrect ? Colors.green : Colors.wrongCode },
             ]}
         />
         <View style={styles.sectorContainer}>
-            <Text style={styles.sectorName}>{`#${order}   ${name}`}</Text>
             <Text
                 style={[
                     styles.sectorValue,
-                    { color: isAnswered ? Colors.rightCode : Colors.gray },
                 ]}
             >
-                { isAnswered ? answerData.Answer : '—'}
+                { enterLocalTime }
             </Text>
         </View>
-        { isAnswered &&
         <View
             style={[
                 styles.sectorContainer,
-                { alignItems: 'flex-end', flex: 1 },
             ]}
         >
-            <Text style={styles.sectorInfo}>{ Helper.formatTime(answerData.AnswerDateTime.Value) }</Text>
-            <Text style={[styles.sectorInfo, { marginTop: 2 }]}>{answerData.Login}</Text>
+            <Text
+                style={[
+                    styles.sectorValue,
+                ]}
+            >
+                { answer }
+            </Text>
         </View>
-        }
+        <View
+            style={[
+                styles.sectorContainer,
+            ]}
+        >
+            <Text
+                style={[
+                    styles.sectorValue,
+                ]}
+            >
+                { login }
+            </Text>
+        </View>
     </View>
 );
 
@@ -53,6 +66,7 @@ const styles = {
         minHeight: 50,
         flexDirection: 'row',
         backgroundColor: Colors.background,
+        flex: 1,
     },
 
     coloredLabel: {
@@ -61,7 +75,7 @@ const styles = {
     },
 
     sectorContainer: {
-        flex: 2,
+        flex: 1,
         paddingHorizontal: 10,
         paddingVertical: 5,
         borderColor: Colors.gray,
@@ -76,7 +90,7 @@ const styles = {
     },
 
     sectorValue: {
-        color: Colors.gray,
+        color: Colors.white,
         fontFamily: 'Verdana',
         fontSize: 15,
     },
@@ -88,4 +102,4 @@ const styles = {
     },
 };
 
-export default inject(mapStateToProps)(observer(Sector));
+export default inject(mapStateToProps)(observer(MonitoringItem));

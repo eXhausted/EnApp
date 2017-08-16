@@ -13,7 +13,6 @@ const VIEWS = {
 };
 
 class MainView extends Component {
-
     render() {
         const ActualView = VIEWS[gameStore.actualView];
 

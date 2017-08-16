@@ -10,8 +10,9 @@ module.exports = {
     ],
     "rules": {
         "max-len": ["error", 150],
-        "indent": ["error", 4],
-        "react/jsx-indent": ["error", 4],
-        "react/jsx-filename-extension": ["error", { "extensions": [".js"] }]
+        "react/jsx-filename-extension": ["error", { "extensions": [".js"] }],
+        "indent": [2, 4],
+        'react/jsx-indent-props': ['error', 4],
+        'react/jsx-indent': ['error', 4],
     },
 };
