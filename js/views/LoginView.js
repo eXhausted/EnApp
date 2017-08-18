@@ -84,7 +84,7 @@ class LoginView extends Component {
                 <View style={styles.imgContainer}>
                     <Image
                         style={styles.imgLogo}
-                        resizeMode="center"
+                        resizeMode={Image.resizeMode.center}
                         source={require('../images/appIcon.png')}
                     />
                 </View>

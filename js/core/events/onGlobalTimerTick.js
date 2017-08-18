@@ -16,10 +16,10 @@ export default () => {
             id: '0',
             title: `${Level.Number}/${gameModel.Levels.length}${Level.Name ? `: ${Level.Name}` : ''}`,
             message: [
-                `${Level.Timeout > 0 ? `АП: ${Helper.formatCount(Level.TimeoutSecondsRemain - gameStore.globalTimerCounter)}` : ''}`,
+                `Осталось: ${Level.SectorsLeftToClose > 0 ? Level.SectorsLeftToClose : 1}`,
                 unreadHint ? `Хинт ${unreadHint.Number}: ${Helper.formatCount(unreadHint.RemainSeconds - gameStore.globalTimerCounter)}` : '',
+                `${Level.Timeout > 0 ? `АП: ${Helper.formatCount(Level.TimeoutSecondsRemain - gameStore.globalTimerCounter)}` : ''}`,
             ].join('   ').trim(),
-            subText: `Осталось: ${Level.SectorsLeftToClose > 0 ? Level.SectorsLeftToClose : 1}`,
             ongoing: false,
             autoCancel: false,
             vibrate: false,

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { observer } from 'mobx-react/native';
 import { Linking, WebView } from 'react-native';
 import { Spinner } from 'native-base';
+import parseUrl from 'parse-url';
 import Helper from '../../../util/helper';
 import Colors from '../../../constants/colors';
 
@@ -47,15 +48,14 @@ class HTMLView extends Component {
     };
 
     onNavigationStateChange = (event) => {
-        const protocol = event.url.split('://')[0];
-        let hostname = event.url.match(/:\/\/([a-z0-9]+):/);
-        hostname = hostname && hostname[1];
+        const parsedUrl = parseUrl(event.url);
+        const splitedPathName = parsedUrl.pathname.split('/');
 
         console.log(Date.now());
         console.log('change');
         console.log(event);
 
-        if (protocol !== 'file' && hostname !== 'localhost') {
+        if (splitedPathName[splitedPathName.length - 1] !== 'defaultHTML.html') {
             Linking.canOpenURL(event.url).then((isCan) => {
                 if (isCan) {
                     this.webView.stopLoading();

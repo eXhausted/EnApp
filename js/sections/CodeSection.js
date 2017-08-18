@@ -238,7 +238,8 @@ class CodeSection extends Component {
 const styles = {
     mainContainer: {
         backgroundColor: Colors.background,
-        padding: 3,
+        paddingVertical: 3,
+        paddingHorizontal: 10,
     },
 
     inputWrapper: {

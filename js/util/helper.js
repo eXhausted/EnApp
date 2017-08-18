@@ -1,8 +1,8 @@
+import { Platform } from 'react-native';
 import moment from 'moment';
 import {
     CustomTabs,
     ANIMATIONS_SLIDE,
-    ANIMATIONS_FADE,
 } from 'react-native-custom-tabs';
 import asyncStorage from './asyncStorage';
 import Colors from '../constants/colors';
@@ -11,7 +11,10 @@ class Helper {
     static normalizeHTML(html, shouldReplaceNlToBr = true) {
         let normalizedHtml = html.replace(
             /(?![^<]*>)(-?\d{2,3}[.,]\d{3,8})[\s.,]{1,3}(-?\d{2,3}[.,]\d{3,8})/gim,
-            '<a href="geo:$1,$2?q=$1,$2">$&</a>',
+            Platform.select({
+                ios: () => '<a href="http://maps.google.com/?daddr=$1,$2">$&</a>',
+                android: () => '<a href="geo:$1,$2">$&</a>',
+            })(),
         );
         normalizedHtml = normalizedHtml.replace(/\r\n/gim, shouldReplaceNlToBr ? '<br/>' : ' ');
         // hack for fucking strange decodeUri before set innerHTML. see in defaultHTML.html

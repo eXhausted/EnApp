@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, KeyboardAvoidingView } from 'react-native';
 import { observer, inject } from 'mobx-react/native';
 import { Button, Container, Header, Tab, Tabs, Title, ScrollableTab, TabHeading, Icon, Badge } from 'native-base';
 
@@ -40,18 +40,18 @@ const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels, Hint
                 />
                 {
                     Level.Timeout > 0 &&
-                    <CountableText
-                        start={Level.TimeoutSecondsRemain}
-                        textStyle={{ color: Colors.upTime }}
-                    />
+                        <CountableText
+                            start={Level.TimeoutSecondsRemain}
+                            textStyle={{ color: Colors.upTime }}
+                        />
                 }
                 {
                     Level.TimeoutAward !== 0 &&
-                    <Text
-                        style={{ color: Colors.wrongCode }}
-                    >
-                        {`(${Helper.formatCount(Math.abs(Level.TimeoutAward), { collapse: true, withUnits: true })})`}
-                    </Text>
+                        <Text
+                            style={{ color: Colors.wrongCode }}
+                        >
+                            {`(${Helper.formatCount(Math.abs(Level.TimeoutAward), { collapse: true, withUnits: true })})`}
+                        </Text>
                 }
             </View>
             <Title style={styles.levelNumber}>{`${Level.Number} из ${Levels.length}`}</Title>
@@ -66,6 +66,7 @@ const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels, Hint
         <Tabs
             locked
             renderTabBar={() => <ScrollableTab backgroundColor={Colors.tabBackground} />}
+            tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
         >
             <Tab
                 heading={
@@ -76,64 +77,74 @@ const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels, Hint
                 }
                 textStyle={styles.tabText}
                 activeTextStyle={styles.tabText}
+                tabStyle={styles.tabStyle}
+                activeTabStyle={styles.tabStyle}
             >
                 <TaskSection />
             </Tab>
             {
                 Level.SectorsLeftToClose > 0 &&
-                <Tab
-                    heading={Helper.formatWithNewLine([
-                        'СЕКТОРЫ',
-                        `(${Level.SectorsLeftToClose})`,
-                    ])}
-                    textStyle={styles.tabText}
-                    activeTextStyle={styles.tabText}
-                >
-                    <SectorsSection />
-                </Tab>
+                    <Tab
+                        heading={Helper.formatWithNewLine([
+                            'СЕКТОРЫ',
+                            `(${Level.SectorsLeftToClose})`,
+                        ])}
+                        textStyle={styles.tabText}
+                        activeTextStyle={styles.tabText}
+                        tabStyle={styles.tabStyle}
+                        activeTabStyle={styles.tabStyle}
+                    >
+                        <SectorsSection />
+                    </Tab>
             }
             {
                 Hints.length > 0 &&
-                <Tab
-                    heading={
-                        Helper.formatWithNewLine([
-                            'ПОДСКАЗКИ',
-                            Hints.find(hint => hint.RemainSeconds > 0) ?
-                                [
-                                    '(',
-                                    Hints.find(hint => hint.RemainSeconds > 0).Number - 1,
-                                    '/',
-                                    Hints.length,
-                                    // ' - ',
-                                    // Helper.formatCount(Hints.find(hint => hint.RemainSeconds > 0).RemainSeconds - globalTimerCounter),
-                                    ')',
-                                ].join('')
-                                : `(${Hints.length}/${Hints.length})`,
-                        ])
-                    }
-                    textStyle={styles.tabText}
-                    activeTextStyle={styles.tabText}
-                >
-                    <HintsSection />
-                </Tab>
+                    <Tab
+                        heading={
+                            Helper.formatWithNewLine([
+                                'ПОДСКАЗКИ',
+                                Hints.find(hint => hint.RemainSeconds > 0) ?
+                                    [
+                                        '(',
+                                        Hints.find(hint => hint.RemainSeconds > 0).Number - 1,
+                                        '/',
+                                        Hints.length,
+                                        // ' - ',
+                                        // Helper.formatCount(Hints.find(hint => hint.RemainSeconds > 0).RemainSeconds - globalTimerCounter),
+                                        ')',
+                                    ].join('')
+                                    : `(${Hints.length}/${Hints.length})`,
+                            ])
+                        }
+                        textStyle={styles.tabText}
+                        activeTextStyle={styles.tabText}
+                        tabStyle={styles.tabStyle}
+                        activeTabStyle={styles.tabStyle}
+                    >
+                        <HintsSection />
+                    </Tab>
             }
             {
                 Bonuses.length > 0 &&
-                <Tab
-                    heading={
-                        Helper.formatWithNewLine([
-                            'БОНУСЫ',
-                            `(${Bonuses.filter(bonus => bonus.IsAnswered).length}/${Bonuses.length})`,
-                        ])
-                    }
-                    textStyle={styles.tabText}
-                    activeTextStyle={styles.tabText}
-                >
-                    <BonusesSection />
-                </Tab>
+                    <Tab
+                        heading={
+                            Helper.formatWithNewLine([
+                                'БОНУСЫ',
+                                `(${Bonuses.filter(bonus => bonus.IsAnswered).length}/${Bonuses.length})`,
+                            ])
+                        }
+                        textStyle={styles.tabText}
+                        activeTextStyle={styles.tabText}
+                        tabStyle={styles.tabStyle}
+                        activeTabStyle={styles.tabStyle}
+                    >
+                        <BonusesSection />
+                    </Tab>
             }
         </Tabs>
-        <CodeSection />
+        <KeyboardAvoidingView behavior="padding">
+            <CodeSection />
+        </KeyboardAvoidingView>
     </Container>
 );
 
@@ -147,6 +158,7 @@ const styles = {
     headerStyle: {
         justifyContent: 'space-between',
         alignItems: 'center',
+        backgroundColor: Colors.tabBackground,
     },
 
     timersContainer: {
@@ -157,6 +169,7 @@ const styles = {
 
     levelNumber: {
         flex: 1,
+        color: Colors.white,
     },
 
     menuButton: {
@@ -178,6 +191,15 @@ const styles = {
     tabText: {
         textAlign: 'center',
         fontSize: 14,
+        color: Colors.white,
+    },
+
+    tabBarUnderlineStyle: {
+        backgroundColor: Colors.white,
+    },
+
+    tabStyle: {
+        backgroundColor: Colors.tabBackground,
     },
 };
 

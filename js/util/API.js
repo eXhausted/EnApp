@@ -28,9 +28,10 @@ class API {
             data: qs.stringify(requestData),
             withCredentials: true,
             maxRedirects: 0,
-            /* headers: {
+            headers: {
                 // Cookie: cookiesValue,
-            }, */
+                'User-Agent': 'EnApp by necto68',
+            },
         });
 
         response = response.data;
@@ -51,6 +52,9 @@ class API {
             data: {
                 Login: storageValues.loginValue,
                 Password: storageValues.passwordValue,
+            },
+            headers: {
+                'User-Agent': 'EnApp by necto68',
             },
         });
 
