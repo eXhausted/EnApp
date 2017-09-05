@@ -1,6 +1,7 @@
 import { action, observable } from 'mobx';
 import BackgroundTimer from 'react-native-background-timer';
 import onGlobalTimerTick from '../../core/events/onGlobalTimerTick';
+import onNewLevelStart from '../../core/events/onNewLevelStart';
 
 import globals from '../../constants/globals';
 
@@ -16,6 +17,7 @@ class GameStore {
     @observable actualBonusCode = '';
     @observable lastUpdateTimestamp = Date.now();
     @observable actualView = 'LoadingView';
+    @observable currentTabsPage = 0;
 
     globalTimer = null;
 
@@ -27,6 +29,12 @@ class GameStore {
         this.isRefreshing = true;
 
         try {
+            setTimeout(() => {
+                // axios timeout hack
+                if (!Object.prototype.hasOwnProperty.call(gameModelBuffer, 'Event')) {
+                    throw new Error('timeout');
+                }
+            }, 10000);
             gameModelBuffer = await API.getGameModal(requestData);
             this.isRefreshing = false;
         } catch (e) {
@@ -37,6 +45,15 @@ class GameStore {
         if (globals.GAME_MODAL_EVENTS_FOR_UPDATE.includes(gameModelBuffer.Event)) {
             this.updateGameModel();
         } else if (gameModelBuffer.Event === 0) {
+            if (
+                this.gameModel.Level &&
+                gameModelBuffer.Level &&
+                this.gameModel.Level.Number !== gameModelBuffer.Level.Number
+            ) {
+                this.gameModel = gameModelBuffer;
+                onNewLevelStart();
+            }
+
             this.gameModel = gameModelBuffer;
             this.onSuccessGetGameModel();
         } else if (Number.isInteger(gameModelBuffer.Event)) {
@@ -78,6 +95,10 @@ class GameStore {
 
     @action setActualView = (viewName) => {
         this.actualView = viewName;
+    };
+
+    @action setCurrentTabsPage = (currentPage) => {
+        this.currentTabsPage = currentPage;
     };
 
     @action signOut = () => {

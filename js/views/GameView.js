@@ -21,15 +21,17 @@ import onSettingsButtonClick from '../core/events/onSettingsButtonClick';
 
 
 const mapStateToProps = (stores => ({
-    globalTimerCounter: stores.gameStore.globalTimerCounter,
+    // globalTimerCounter: stores.gameStore.globalTimerCounter,
     lastUpdateTimestamp: stores.gameStore.lastUpdateTimestamp,
+    currentTabsPage: stores.gameStore.currentTabsPage,
+    setCurrentTabsPage: stores.gameStore.setCurrentTabsPage,
     Level: stores.gameStore.gameModel.Level,
     Levels: stores.gameStore.gameModel.Levels,
     Hints: stores.gameStore.gameModel.Level.Helps,
     Bonuses: stores.gameStore.gameModel.Level.Bonuses,
 }));
 
-const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels, Hints, Bonuses }) => (
+const GameView = ({ /* globalTimerCounter, */ lastUpdateTimestamp, currentTabsPage, setCurrentTabsPage, Level, Levels, Hints, Bonuses }) => (
     <Container>
         <Header style={styles.headerStyle} hasTabs>
             <View style={styles.timersContainer}>
@@ -57,6 +59,13 @@ const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels, Hint
             <Title style={styles.levelNumber}>{`${Level.Number} из ${Levels.length}`}</Title>
             <Button
                 transparent
+                onPress={() => {}}
+                style={styles.menuButton}
+            >
+                <Icon style={{ fontSize: 20, color: 'white' }} name="refresh" />
+            </Button>
+            <Button
+                transparent
                 onPress={onSettingsButtonClick}
                 style={styles.menuButton}
             >
@@ -66,6 +75,8 @@ const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels, Hint
         <Tabs
             locked
             renderTabBar={() => <ScrollableTab backgroundColor={Colors.tabBackground} />}
+            page={currentTabsPage}
+            onChangeTab={tabObject => setCurrentTabsPage(tabObject.i)}
             tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
         >
             <Tab
@@ -142,9 +153,7 @@ const GameView = ({ globalTimerCounter, lastUpdateTimestamp, Level, Levels, Hint
                     </Tab>
             }
         </Tabs>
-        <KeyboardAvoidingView behavior="padding">
-            <CodeSection />
-        </KeyboardAvoidingView>
+        <CodeSection />
     </Container>
 );
 

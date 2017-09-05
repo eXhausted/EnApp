@@ -37,7 +37,6 @@
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		6D01A4111EE9DD6500264E53 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D01A3F61EE9DD0900264E53 /* libRCTPushNotification.a */; };
 		6D8014961F0AEA99001BA53E /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E7187FDBF9BC4738AE6F50B3 /* FontAwesome.ttf */; };
-		6D871C671F44E696006D8E90 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D871C661F44E696006D8E90 /* MapKit.framework */; };
 		6DE8B8701F0CFB3F00615D33 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 90645C3CEB084CD58E5C5B11 /* Ionicons.ttf */; };
 		6DE8B8911F0CFB4F00615D33 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F50E9B33EC7F47B0A3D01057 /* Entypo.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
@@ -356,7 +355,6 @@
 		692B2D41D958424FB861416C /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		6D01A3E61EE9DD0900264E53 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		6D871C641F44E67A006D8E90 /* EnApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = EnApp.entitlements; path = EnApp/EnApp.entitlements; sourceTree = "<group>"; };
-		6D871C661F44E696006D8E90 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		6DAB1BE32AA2491AA04F4122 /* libDBCustomTabs.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libDBCustomTabs.a; sourceTree = "<group>"; };
 		763CBA43F0B5461D81BED20B /* Courier New.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Courier New.ttf"; path = "../node_modules/native-base/Fonts/Courier New.ttf"; sourceTree = "<group>"; };
 		77E9944932604A849C922512 /* Roboto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto.ttf; path = "../node_modules/native-base/Fonts/Roboto.ttf"; sourceTree = "<group>"; };
@@ -404,7 +402,6 @@
 			files = (
 				6D01A4111EE9DD6500264E53 /* libRCTPushNotification.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
-				6D871C671F44E696006D8E90 /* MapKit.framework in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
@@ -630,7 +627,6 @@
 		6D871C651F44E696006D8E90 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				6D871C661F44E696006D8E90 /* MapKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -826,7 +822,7 @@
 								enabled = 0;
 							};
 							com.apple.Maps.iOS = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TextInput, Alert, Text, Animated, Easing } from 'react-native';
+import { View, TextInput, Alert, Text, Animated, Easing, KeyboardAvoidingView } from 'react-native';
 import { observer, inject } from 'mobx-react/native';
 import { Icon } from 'native-base';
 
@@ -27,9 +27,15 @@ const mapStateToProps = stores => ({
 });
 
 class CodeSection extends Component {
+    state = {
+        isMonitoringOpen: false,
+    };
+
     blockDurationContainerShake = new Animated.Value(0);
+    monitoringSectionOpen = new Animated.Value(0);
 
     blockDurationContainerShakeOffset = 15;
+    monitoringSectionOpenedHeight = 300;
 
     sendCode = () => {
         const {
@@ -68,7 +74,44 @@ class CodeSection extends Component {
         }
     };
 
+    toggleMonitoringSection = () => {
+        if (this.codeInput) {
+            this.codeInput.blur();
+        }
+
+        if (this.bonusInput) {
+            this.bonusInput.blur();
+        }
+
+        Animated.timing(
+            this.monitoringSectionOpen,
+            {
+                toValue: this.state.isMonitoringOpen ? 0 : this.monitoringSectionOpenedHeight,
+                duration: 300,
+            },
+        ).start(() => {
+            this.setState({
+                isMonitoringOpen: !this.state.isMonitoringOpen,
+            });
+        });
+    };
+
+    hideMonitoringSection = () => {
+        Animated.timing(
+            this.monitoringSectionOpen,
+            {
+                toValue: 0,
+                duration: 300,
+            },
+        ).start(() => {
+            this.setState({
+                isMonitoringOpen: false,
+            });
+        });
+    };
+
     render() {
+
         const {
             actualCode,
             actualBonusCode,
@@ -84,6 +127,10 @@ class CodeSection extends Component {
             attemtsNumber,
             attemtsPeriod,
         } = this.props;
+
+        const {
+            isMonitoringOpen,
+        } = this.state;
 
         const oldCode = oldCodes.filter((code) => {
             if (hasAnswerBlockRule) return code.Kind === 1;
@@ -147,10 +194,10 @@ class CodeSection extends Component {
 
         return (
             <View style={styles.mainContainer}>
-                { 1 === 0 &&
-                <Animated.View style={{ height: 300 }}>
-                    <MonitoringSection />
-                </Animated.View>
+                {
+                    <Animated.View style={{ height: this.monitoringSectionOpen }}>
+                        <MonitoringSection />
+                    </Animated.View>
                 }
                 {
                     hasAnswerBlockRule &&
@@ -191,45 +238,61 @@ class CodeSection extends Component {
                         />
                     </Animated.View>
                 }
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Icon style={Object.assign({}, styles.inputIcon, { color: 'white' })} name="list-box" />
-                    <View style={[styles.inputWrapper, { borderColor: highlightColor, flex: 1 }]}>
-                        { hasAnswerBlockRule && <Icon style={Object.assign({}, styles.inputIcon, { color: Colors.upTime })} name="warning" /> }
-                        <TextInput
-                            blurOnSubmit
-                            selectTextOnFocus
-                            autoCorrect={!hasAnswerBlockRule}
-                            underlineColorAndroid="transparent"
-                            returnKeyType="send"
-                            placeholder="Код"
-                            placeholderTextColor={Colors.gray}
-                            onChangeText={code => changeActualCode(code)}
-                            onSubmitEditing={this.sendCode}
-                            value={actualCode}
-                            style={[styles.codeInput, { color: highlightColor }]}
+                <KeyboardAvoidingView behavior={'padding'}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Icon
+                            style={Object.assign({}, styles.inputIcon, { color: isMonitoringOpen ? Colors.tabBackground : Colors.white })}
+                            name="list-box"
+                            onPress={this.toggleMonitoringSection}
                         />
-                        { oldCode && <Icon style={Object.assign({}, styles.inputIcon, { color: highlightColor })} name={iconName} /> }
+                        <View style={[styles.inputWrapper, { borderColor: highlightColor, flex: 1 }]}>
+                            { hasAnswerBlockRule && <Icon style={Object.assign({}, styles.inputIcon, { color: Colors.upTime })} name="warning" /> }
+                            <TextInput
+                                blurOnSubmit
+                                selectTextOnFocus
+                                ref={(input) => { this.codeInput = input; }}
+                                autoCorrect={!hasAnswerBlockRule}
+                                underlineColorAndroid="transparent"
+                                returnKeyType="send"
+                                placeholder="Код"
+                                placeholderTextColor={Colors.gray}
+                                onChangeText={code => changeActualCode(code)}
+                                onSubmitEditing={this.sendCode}
+                                onFocus={this.hideMonitoringSection}
+                                value={actualCode}
+                                style={[styles.codeInput, { color: highlightColor }]}
+                            />
+                            { oldCode && <Icon style={Object.assign({}, styles.inputIcon, { color: highlightColor })} name={iconName} /> }
+                        </View>
                     </View>
-                </View>
-                {
-                    (hasAnswerBlockRule && bonuses.find(bonus => !bonus.IsAnswered)) &&
-                    <View style={[styles.inputWrapper, { borderColor: highlightBonusColor, marginTop: 5 }]}>
-                        <TextInput
-                            blurOnSubmit
-                            selectTextOnFocus
-                            autoCorrect
-                            underlineColorAndroid="transparent"
-                            returnKeyType="send"
-                            placeholder="Бонус"
-                            placeholderTextColor={Colors.gray}
-                            onChangeText={code => changeActualBonusCode(code)}
-                            onSubmitEditing={sendBonusCode}
-                            value={actualBonusCode}
-                            style={[styles.codeInput, { color: highlightBonusColor }]}
-                        />
-                        { oldBonusCode && <Icon style={Object.assign({}, styles.inputIcon, { color: highlightBonusColor })} name={bonusIconName} /> }
-                    </View>
-                }
+                    {
+                        (hasAnswerBlockRule && bonuses.find(bonus => !bonus.IsAnswered)) &&
+                        <View style={[styles.inputWrapper, { borderColor: highlightBonusColor, marginTop: 5 }]}>
+                            <TextInput
+                                blurOnSubmit
+                                selectTextOnFocus
+                                autoCorrect
+                                ref={(input) => { this.bonusInput = input; }}
+                                underlineColorAndroid="transparent"
+                                returnKeyType="send"
+                                placeholder="Бонус"
+                                placeholderTextColor={Colors.gray}
+                                onChangeText={code => changeActualBonusCode(code)}
+                                onSubmitEditing={sendBonusCode}
+                                onFocus={this.hideMonitoringSection}
+                                value={actualBonusCode}
+                                style={[styles.codeInput, { color: highlightBonusColor }]}
+                            />
+                            {
+                                oldBonusCode &&
+                                <Icon
+                                    style={Object.assign({}, styles.inputIcon, { color: highlightBonusColor })}
+                                    name={bonusIconName}
+                                />
+                            }
+                        </View>
+                    }
+                </KeyboardAvoidingView>
             </View>
         );
     }

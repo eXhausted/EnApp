@@ -40,6 +40,13 @@ const MonitoringItem = ({ login, userId, kind, answer, enterLocalTime, isCorrect
             <Text
                 style={[
                     styles.sectorValue,
+                    {
+                        color: do {
+                            if (!isCorrect) { Colors.wrongCode }
+                            else if (isCorrect && kind === 1) { Colors.rightCode }
+                            else if (isCorrect && kind === 2) { Colors.bonus }
+                        }
+                    }
                 ]}
             >
                 { answer }
@@ -63,7 +70,7 @@ const MonitoringItem = ({ login, userId, kind, answer, enterLocalTime, isCorrect
 
 const styles = {
     mainContainer: {
-        minHeight: 50,
+        minHeight: 18,
         flexDirection: 'row',
         backgroundColor: Colors.background,
         flex: 1,
@@ -76,6 +83,7 @@ const styles = {
 
     sectorContainer: {
         flex: 1,
+        alignItems: 'center',
         paddingHorizontal: 10,
         paddingVertical: 5,
         borderColor: Colors.gray,
@@ -83,22 +91,10 @@ const styles = {
         borderTopWidth: 0.5,
     },
 
-    sectorName: {
-        color: Colors.white,
-        fontFamily: 'Verdana',
-        fontSize: 15,
-    },
-
     sectorValue: {
         color: Colors.white,
         fontFamily: 'Verdana',
-        fontSize: 15,
-    },
-
-    sectorInfo: {
-        color: Colors.gray,
-        fontFamily: 'Verdana',
-        fontSize: 13,
+        fontSize: 12,
     },
 };
 

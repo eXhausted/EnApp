@@ -24,7 +24,7 @@ class API {
         let response = await axios({
             url: `http://${domainValue}/gameengines/encounter/play/${idGameValue}?json=1&lang=ru`,
             method: 'post',
-            timeout: 12000,
+            timeout: 10000,
             data: qs.stringify(requestData),
             withCredentials: true,
             maxRedirects: 0,
