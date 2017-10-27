@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, KeyboardAvoidingView } from 'react-native';
 import { observer, inject } from 'mobx-react/native';
-import { Button, Container, Header, Tab, Tabs, Title, ScrollableTab, TabHeading, Icon, Badge } from 'native-base';
+import moment from 'moment';
+import { Button, Container, Header, Tab, Tabs, Title, ScrollableTab, TabHeading, Icon, Badge, Right } from 'native-base';
 
 import IconEntypo from 'react-native-vector-icons/Entypo';
 
@@ -31,7 +32,7 @@ const mapStateToProps = (stores => ({
     Bonuses: stores.gameStore.gameModel.Level.Bonuses,
 }));
 
-const GameView = ({ /* globalTimerCounter, */ lastUpdateTimestamp, currentTabsPage, setCurrentTabsPage, Level, Levels, Hints, Bonuses }) => (
+const GameView = ({/* globalTimerCounter, */ lastUpdateTimestamp, currentTabsPage, setCurrentTabsPage, Level, Levels, Hints, Bonuses }) => (
     <Container>
         <Header style={styles.headerStyle} hasTabs>
             <View style={styles.timersContainer}>
@@ -42,42 +43,57 @@ const GameView = ({ /* globalTimerCounter, */ lastUpdateTimestamp, currentTabsPa
                 />
                 {
                     Level.Timeout > 0 &&
-                        <CountableText
-                            start={Level.TimeoutSecondsRemain}
-                            textStyle={{ color: Colors.upTime }}
-                        />
+                    <CountableText
+                        start={Level.TimeoutSecondsRemain}
+                        textStyle={{ color: Colors.upTime }}
+                    />
                 }
                 {
                     Level.TimeoutAward !== 0 &&
-                        <Text
-                            style={{ color: Colors.wrongCode }}
-                        >
-                            {`(${Helper.formatCount(Math.abs(Level.TimeoutAward), { collapse: true, withUnits: true })})`}
-                        </Text>
+                    <Text
+                        style={{ color: Colors.wrongCode }}
+                    >
+                        {`(${Helper.formatCount(Math.abs(Level.TimeoutAward), { collapse: true, withUnits: true })})`}
+                    </Text>
                 }
             </View>
             <Title style={styles.levelNumber}>{`${Level.Number} из ${Levels.length}`}</Title>
-            <Button
-                transparent
-                onPress={() => {}}
-                style={styles.menuButton}
-            >
-                <Icon style={{ fontSize: 20, color: 'white' }} name="refresh" />
-            </Button>
-            <Button
-                transparent
-                onPress={onSettingsButtonClick}
-                style={styles.menuButton}
-            >
-                <IconEntypo style={{ fontSize: 20, color: 'white' }} name="dots-three-vertical" />
-            </Button>
+            <Right>
+                <View style={styles.lastUpdateContainer}>
+                    <Text
+                        style={styles.lastUpdateTitle}
+                    >
+                        {'Обновлено'}
+                    </Text>
+                    <CountableText
+                        increment
+                        start={moment.duration(Date.now() - lastUpdateTimestamp).asSeconds()}
+                        formatCountOptions={{ collapse: true, withUnits: true }}
+                        textStyle={{ color: Colors.upTime }}
+                    />
+                    <Text
+                        style={styles.lastUpdateTitle}
+                    >
+                        {'назад'}
+                    </Text>
+                </View>
+                <Button
+                    transparent
+                    onPress={onSettingsButtonClick}
+                    style={styles.menuButton}
+                >
+                    <IconEntypo style={{ fontSize: 20, color: 'white' }} name="dots-three-vertical" />
+                </Button>
+            </Right>
         </Header>
         <Tabs
             locked
             renderTabBar={() => <ScrollableTab backgroundColor={Colors.tabBackground} />}
+            initialPage={0}
             page={currentTabsPage}
             onChangeTab={tabObject => setCurrentTabsPage(tabObject.i)}
             tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
+            prerenderingSiblingsNumber={1}
         >
             <Tab
                 heading={
@@ -95,62 +111,62 @@ const GameView = ({ /* globalTimerCounter, */ lastUpdateTimestamp, currentTabsPa
             </Tab>
             {
                 Level.SectorsLeftToClose > 0 &&
-                    <Tab
-                        heading={Helper.formatWithNewLine([
-                            'СЕКТОРЫ',
-                            `(${Level.SectorsLeftToClose})`,
-                        ])}
-                        textStyle={styles.tabText}
-                        activeTextStyle={styles.tabText}
-                        tabStyle={styles.tabStyle}
-                        activeTabStyle={styles.tabStyle}
-                    >
-                        <SectorsSection />
-                    </Tab>
+                <Tab
+                    heading={Helper.formatWithNewLine([
+                        'СЕКТОРЫ',
+                        `(${Level.SectorsLeftToClose})`,
+                    ])}
+                    textStyle={styles.tabText}
+                    activeTextStyle={styles.tabText}
+                    tabStyle={styles.tabStyle}
+                    activeTabStyle={styles.tabStyle}
+                >
+                    <SectorsSection />
+                </Tab>
             }
             {
                 Hints.length > 0 &&
-                    <Tab
-                        heading={
-                            Helper.formatWithNewLine([
-                                'ПОДСКАЗКИ',
-                                Hints.find(hint => hint.RemainSeconds > 0) ?
-                                    [
-                                        '(',
-                                        Hints.find(hint => hint.RemainSeconds > 0).Number - 1,
-                                        '/',
-                                        Hints.length,
-                                        // ' - ',
-                                        // Helper.formatCount(Hints.find(hint => hint.RemainSeconds > 0).RemainSeconds - globalTimerCounter),
-                                        ')',
-                                    ].join('')
-                                    : `(${Hints.length}/${Hints.length})`,
-                            ])
-                        }
-                        textStyle={styles.tabText}
-                        activeTextStyle={styles.tabText}
-                        tabStyle={styles.tabStyle}
-                        activeTabStyle={styles.tabStyle}
-                    >
-                        <HintsSection />
-                    </Tab>
+                <Tab
+                    heading={
+                        Helper.formatWithNewLine([
+                            'ПОДСКАЗКИ',
+                            Hints.find(hint => hint.RemainSeconds > 0) ?
+                                [
+                                    '(',
+                                    Hints.find(hint => hint.RemainSeconds > 0).Number - 1,
+                                    '/',
+                                    Hints.length,
+                                    // ' - ',
+                                    // Helper.formatCount(Hints.find(hint => hint.RemainSeconds > 0).RemainSeconds - globalTimerCounter),
+                                    ')',
+                                ].join('')
+                                : `(${Hints.length}/${Hints.length})`,
+                        ])
+                    }
+                    textStyle={styles.tabText}
+                    activeTextStyle={styles.tabText}
+                    tabStyle={styles.tabStyle}
+                    activeTabStyle={styles.tabStyle}
+                >
+                    <HintsSection />
+                </Tab>
             }
             {
                 Bonuses.length > 0 &&
-                    <Tab
-                        heading={
-                            Helper.formatWithNewLine([
-                                'БОНУСЫ',
-                                `(${Bonuses.filter(bonus => bonus.IsAnswered).length}/${Bonuses.length})`,
-                            ])
-                        }
-                        textStyle={styles.tabText}
-                        activeTextStyle={styles.tabText}
-                        tabStyle={styles.tabStyle}
-                        activeTabStyle={styles.tabStyle}
-                    >
-                        <BonusesSection />
-                    </Tab>
+                <Tab
+                    heading={
+                        Helper.formatWithNewLine([
+                            'БОНУСЫ',
+                            `(${Bonuses.filter(bonus => bonus.IsAnswered).length}/${Bonuses.length})`,
+                        ])
+                    }
+                    textStyle={styles.tabText}
+                    activeTextStyle={styles.tabText}
+                    tabStyle={styles.tabStyle}
+                    activeTabStyle={styles.tabStyle}
+                >
+                    <BonusesSection />
+                </Tab>
             }
         </Tabs>
         <CodeSection />
@@ -182,8 +198,8 @@ const styles = {
     },
 
     menuButton: {
-        flex: 1,
-        justifyContent: 'flex-end',
+        // flex: 1,
+        // justifyContent: 'flex-end',
     },
 
     tabIcon: {
@@ -209,6 +225,18 @@ const styles = {
 
     tabStyle: {
         backgroundColor: Colors.tabBackground,
+    },
+
+    lastUpdateContainer: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    lastUpdateTitle: {
+        color: Colors.white,
+        fontSize: 12
+        ,
     },
 };
 

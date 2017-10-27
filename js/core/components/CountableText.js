@@ -8,7 +8,7 @@ const mapStateToProps = stores => ({
     updateGameModel: stores.gameStore.updateGameModel,
 });
 
-const CountableText = ({ globalTimerCounter, updateGameModel, increment, start, textStyle }) => {
+const CountableText = ({ globalTimerCounter, updateGameModel, increment, start, textStyle, formatCountOptions }) => {
     let counter = Math.round(start);
 
     if (increment === true) {
@@ -21,7 +21,7 @@ const CountableText = ({ globalTimerCounter, updateGameModel, increment, start, 
         }
     }
 
-    return <Text style={textStyle}>{Helper.formatCount(counter)}</Text>;
+    return <Text style={textStyle}>{Helper.formatCount(counter, formatCountOptions)}</Text>;
 };
 
 

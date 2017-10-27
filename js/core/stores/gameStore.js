@@ -7,6 +7,7 @@ import globals from '../../constants/globals';
 
 import API from '../../util/API';
 import asyncStorage from '../../util/asyncStorage';
+import Helper from '../../util/helper';
 
 
 class GameStore {
@@ -18,24 +19,27 @@ class GameStore {
     @observable lastUpdateTimestamp = Date.now();
     @observable actualView = 'LoadingView';
     @observable currentTabsPage = 0;
+    @observable updatesQueue = [];
 
     globalTimer = null;
 
-    @action updateGameModel = async (requestData) => {
+    @action updateGameModel = async (requestData = {}) => {
+        let $uniqueId = 0;
+
+        if (this.updatesQueue.length === 0 || !Helper.isObjectEmpty(requestData)) {
+            $uniqueId = Helper.randomInt(100000, 999999);
+            this.updatesQueue = this.updatesQueue.concat({ $uniqueId, ...requestData });
+        }
+
         if (this.isRefreshing) return;
 
+        const firstRequestData = this.updatesQueue[0];
         let gameModelBuffer = {};
 
         this.isRefreshing = true;
 
         try {
-            setTimeout(() => {
-                // axios timeout hack
-                if (!Object.prototype.hasOwnProperty.call(gameModelBuffer, 'Event')) {
-                    throw new Error('timeout');
-                }
-            }, 10000);
-            gameModelBuffer = await API.getGameModal(requestData);
+            gameModelBuffer = await API.getGameModal(firstRequestData);
             this.isRefreshing = false;
         } catch (e) {
             this.isRefreshing = false;
@@ -55,7 +59,7 @@ class GameStore {
             }
 
             this.gameModel = gameModelBuffer;
-            this.onSuccessGetGameModel();
+            this.onSuccessGetGameModel({ deleteUpdatesItemId: firstRequestData.$uniqueId });
         } else if (Number.isInteger(gameModelBuffer.Event)) {
             this.setActualView('LoadingView');
             this.gameModel = gameModelBuffer;
@@ -108,11 +112,23 @@ class GameStore {
         asyncStorage.setItem('cookiesValue', '');
     };
 
-    @action onSuccessGetGameModel = () => {
+    @action onSuccessGetGameModel = ({ deleteUpdatesItemId }) => {
         this.setActualView('GameView');
 
         this.lastUpdateTimestamp = Date.now();
         this.globalTimerCounter = 0;
+
+        if (this.updatesQueue.length > 0) {
+            // delete sent item
+            this.updatesQueue = this.updatesQueue.filter(item => item.$uniqueId !== deleteUpdatesItemId);
+
+            if (this.updatesQueue.length > 0) {
+                // no timeout === ban for bruteforce
+                setTimeout(() => {
+                    this.updateGameModel(this.updatesQueue[0]);
+                }, Helper.randomInt(200, 500));
+            }
+        }
 
         if (this.globalTimer) BackgroundTimer.clearInterval(this.globalTimer);
 

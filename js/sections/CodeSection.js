@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, TextInput, Alert, Text, Animated, Easing, KeyboardAvoidingView } from 'react-native';
 import { observer, inject } from 'mobx-react/native';
-import { Icon } from 'native-base';
+import { Icon, Button } from 'native-base';
 
 import Helper from '../util/helper';
 
@@ -111,7 +111,6 @@ class CodeSection extends Component {
     };
 
     render() {
-
         const {
             actualCode,
             actualBonusCode,
@@ -260,9 +259,17 @@ class CodeSection extends Component {
                                 onSubmitEditing={this.sendCode}
                                 onFocus={this.hideMonitoringSection}
                                 value={actualCode}
+                                keyboardAppearance={'dark'}
                                 style={[styles.codeInput, { color: highlightColor }]}
                             />
-                            { oldCode && <Icon style={Object.assign({}, styles.inputIcon, { color: highlightColor })} name={iconName} /> }
+                            {
+                                actualCode.length > 0 &&
+                                <Icon
+                                    style={Object.assign({}, styles.inputIcon, { color: Colors.white })}
+                                    name="close"
+                                    onPress={() => changeActualCode('')}
+                                />
+                            }
                         </View>
                     </View>
                     {
@@ -281,13 +288,15 @@ class CodeSection extends Component {
                                 onSubmitEditing={sendBonusCode}
                                 onFocus={this.hideMonitoringSection}
                                 value={actualBonusCode}
+                                keyboardAppearance={'dark'}
                                 style={[styles.codeInput, { color: highlightBonusColor }]}
                             />
                             {
-                                oldBonusCode &&
+                                actualBonusCode.length > 0 &&
                                 <Icon
-                                    style={Object.assign({}, styles.inputIcon, { color: highlightBonusColor })}
-                                    name={bonusIconName}
+                                    style={Object.assign({}, styles.inputIcon, { color: Colors.white })}
+                                    name="close"
+                                    onPress={() => changeActualBonusCode('')}
                                 />
                             }
                         </View>

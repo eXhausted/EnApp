@@ -94,6 +94,14 @@ class Helper {
             },
         });
     }
+
+    static isObjectEmpty(obj) {
+        return Object.keys(obj).length === 0;
+    }
+
+    static randomInt(min, max) {
+        return Math.floor(Math.random() * ((max - min) + 1)) + min;
+    }
 }
 
 export default Helper;

@@ -3,6 +3,10 @@ import axios from 'axios';
 
 import asyncStorage from './asyncStorage';
 
+const AXIOS_INSTANCE = axios.create({
+    timeout: 15000,
+});
+
 class API {
     static async getGameModal(requestData = {}) {
         const storageValues = await asyncStorage.getItems([
@@ -21,10 +25,9 @@ class API {
             return {};
         }
 
-        let response = await axios({
+        let response = await AXIOS_INSTANCE.request({
             url: `http://${domainValue}/gameengines/encounter/play/${idGameValue}?json=1&lang=ru`,
             method: 'post',
-            timeout: 10000,
             data: qs.stringify(requestData),
             withCredentials: true,
             maxRedirects: 0,
